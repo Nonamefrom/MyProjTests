@@ -3,12 +3,21 @@ version: "3.7"
 
 services:
   e2e-allure:
-    image: frankescobar/allure-docker-service
+    image: frankescobar/allure-docker-service:2.21.0
     restart: unless-stopped
     volumes:
-      - "./allure-results:/app/allure-results"
+      - ./allure-results:/app/allure-results
+      - ./allure-report:/app/allure-report
     ports:
       - "5050:5050"
     environment:
       CHECK_RESULTS_EVERY_SECONDS: 10
       KEEP_HISTORY: 1
+
+  e2e-python:
+    build:
+      context: .
+      dockerfile: ./docker/local/python/Dockerfile
+    tty: true
+    volumes:
+      - "./:/var/www"

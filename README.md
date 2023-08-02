@@ -2,23 +2,21 @@
 
 Проект для e2e тестов проектов группы «Маркетинг»
 
-ToDo: описать как с этим работать
-
 ## Как с этим работать
 
 - `make setup`
 - `make build`
 - `make install`
-- `make run-python`
+- `make up`
 
-Поздравляем, вы в контейнере в python
+Поздравляем, после команд у вас запущен Allure (для просмотра отчетов по тестам) и контейнер для работы с python
+
+## Как работать с тестами
 
 Для запуска тестов:
 `pipenv run pytest --alluredir=allure-results --browser chrome_headless`
 
-## Как смотреть отчеты
-
-- `make up`
+## Как смотреть отчеты Allure
 
 - На `http://localhost:5050` будет доступ `allure`
 - На `http://localhost:5050/allure-docker-service/projects/default/reports/latest/index.html` последний отчет

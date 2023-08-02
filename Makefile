@@ -1,7 +1,7 @@
 # Setup
 ROOT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 DOCKER_COMPOSE := docker-compose
-DOCKER_COMMAND_TEMPLATE := docker run -it --volume=${PWD}:/var/www --entrypoint=/bin/bash e2e-python
+DOCKER_COMMAND_TEMPLATE := docker-compose exec e2e-python bash
 DOCKER_COMPOSE_FILE := $(ROOT_DIR)/docker-compose.yml
 ENV_FILE := $(ROOT_DIR)/.env
 # End setup
@@ -42,6 +42,9 @@ logs: ## Показывает логи всех контейнеров в follow
 
 ps: ## Выводит список контейнеров и их статусы из docker-compose файла
 	@$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) ps
+
+test: ## Запускает тесты с генерацией отчетов
+	@pytest --alluredir="./allure-results"
 
 all: ## Настройка окружения, сборка, установка зависимостей и запуск контейнеров в одной команде
 	make setup

@@ -1,0 +1,11 @@
+---
+
+# Configuration
+# https://yamllint.readthedocs.io/en/stable/configuration.html
+
+extends: default
+
+rules:
+  brackets:
+    forbid: true
+  line-length: disable

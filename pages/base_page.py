@@ -1,63 +1,42 @@
-from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.ui import WebDriverWait as wait
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver import ActionChains
-from selenium.webdriver.support import expected_conditions
-from selenium.webdriver.support.expected_conditions import StaleElementReferenceException
-from selenium.webdriver.support.wait import WebDriverWait
 
 
-class BasePage:
-    """ Wrapper for selenium operations """
+class BasePage(object):
 
-    def __init__(self, driver):
-        self._driver = driver
-        self._wait = WebDriverWait(self._driver, 10)
+    def __init__(self, driver, url):
+        self.driver = driver
+        self.url = url
 
-    def click(self, webelement):
-        el = self._wait.until(expected_conditions.element_to_be_clickable(webelement))
-        self._highlight_element(el, "green")
-        el.click()
+    def open(self):
+        self.driver.get(self.url)
 
-    def fill_text(self, webelement, txt):
-        el = self._wait.until(expected_conditions.element_to_be_clickable(webelement))
-        el.clear()
-        self._highlight_element(el, "green")
-        el.send_keys(txt)
+    def element_is_visible(self, locator, timeout=5):
+        return wait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
 
-    def clear_text(self, webelement):
-        el = self._wait.until(expected_conditions.element_to_be_clickable(webelement))
-        el.clear()
+    def elements_are_visible(self, locator, timeout=5):
+        return wait(self.driver, timeout).until(EC.visibility_of_all_elements_located(locator))
 
-    def scroll_to_bottom(self):
-        self._driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+    def element_is_present(self, locator, timeout=5):
+        return wait(self.driver, timeout).until(EC.presence_of_element_located(locator))
 
-    def submit(self, webelement):
-        self._highlight_element(webelement, "green")
-        webelement.submit()
+    def element_are_present(self, locator, timeout=5):
+        return wait(self.driver, timeout).until(EC.presence_of_all_elements_located(locator))
 
-    def get_text(self, webelement):
-        el = self._wait.until(expected_conditions.visibility_of_element_located(webelement))
-        self._highlight_element(el, "green")
-        return el.text
+    def element_is_not_visible(self, locator, timeout=5):
+        return wait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))
 
-    def move_to_element(self, webelement):
-        action = ActionChains(self._driver)
-        self._wait.until(expected_conditions.visibility_of(webelement))
-        action.move_to_element(webelement).perform()
+    def element_is_clickable(self, locator, timeout=5):
+        return wait(self.driver, timeout).until(EC.element_to_be_clickable(locator))
 
-    def is_elem_displayed(self, webelement):
-        try:
-            return webelement.is_displayed()
-        except StaleElementReferenceException:
-            return False
-        except NoSuchElementException:
-            return False
+    def fill_text(self, locator, txt, timeout=5):
+        element = wait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
+        element.clear()
+        element.send_keys(txt)
 
-    def _highlight_element(self, webelement, color):
-        original_style = webelement.get_attribute("style")
-        new_style = "background-color:yellow;border: 1px solid " + color + original_style
-        self._driver.execute_script(
-            "var tmpArguments = arguments;setTimeout(function () {tmpArguments[0].setAttribute('style', '"
-            + new_style + "');},0);", webelement)
-        self._driver.execute_script(
-            "var tmpArguments = arguments;setTimeout(function () {tmpArguments[0].setAttribute('style', '"
-            + original_style + "');},400);", webelement)
+    def click(self, locator, timeout=5):
+        return wait(self.driver, timeout).until(EC.element_to_be_clickable(locator)).click()
+
+    def go_to_element(self, element):
+        self.driver.execute_script("argument[0].scrollIntoView();", element)
