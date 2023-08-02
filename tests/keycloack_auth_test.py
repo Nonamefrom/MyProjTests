@@ -4,8 +4,6 @@ from pages.base_page import BasePage
 from pages.keycloack_auth_page import KeycloackAuthForm
 from pages.topbar_cp_page import TopBarCpPage
 
-#driver = webdriver.Remote("http://selenium:4444/wd/hub", webdriver.DesiredCapabilities.CHROME)
-
 CPurl = 'https://develop-cp.dev.svrauto.ru/auth/login'
 email = 'admin@svrauto.ru'
 wrongemail = 'admin@admin@ru23'

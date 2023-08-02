@@ -16,9 +16,6 @@ help: ## Show this help message.
 setup: ## Копирование файлов
 	@[ -f $(ENV_FILE) ] && echo .env exists || cp .env.template .env
 
-install: ## Запускает установку зависимостей
-	@$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) run --rm e2e-python bash -c "pip install -r requirements.txt"
-
 build: ## Запускает сборку образа python
 	@docker build -f ./docker/local/python/Dockerfile --progress=plain -t e2e-python .
 

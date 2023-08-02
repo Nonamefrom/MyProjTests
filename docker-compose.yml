@@ -1,7 +1,19 @@
 ---
 version: "3.7"
 
+networks:
+  selenium:
+
 services:
+  chrome:
+    image: ${CHROMEDRIVER_IMAGE}
+    shm_size: 2gb
+    networks:
+      - selenium
+    ports:
+      - '7900:7900'
+      - '4444:4444'
+
   e2e-allure:
     image: frankescobar/allure-docker-service:2.21.0
     restart: unless-stopped
@@ -19,5 +31,7 @@ services:
       context: .
       dockerfile: ./docker/local/python/Dockerfile
     tty: true
+    networks:
+      - selenium
     volumes:
       - "./:/var/www"

@@ -7,9 +7,13 @@ from webdriver_manager.chrome import ChromeDriverManager
 @pytest.fixture(scope='function')
 def driver():
     options = webdriver.ChromeOptions()
-    chrome_version = "114.0.5735.90"
-    service = ChromeService(ChromeDriverManager(version=chrome_version).install())
-    driver = webdriver.Chrome(service=service, options=options)
+    # options.add_argument("--disable-dev-shm-usage")
+    # options.add_argument("--no-sandbox")
+    # options.add_argument("--headless")
+    driver = webdriver.Remote(
+        command_executor="http://chrome:4444/wd/hub",
+        options=options
+    )
     driver.maximize_window()
     yield driver
     driver.quit()
