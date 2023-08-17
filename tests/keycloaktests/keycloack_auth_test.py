@@ -1,9 +1,12 @@
 import allure
 import pytest
 import configparser
+import time
 from pages.base_page import BasePage
 from pages.keycloack_auth_page import KeycloackAuthForm
 from pages.controlpanelpages.topbar_cp_page import TopBarCpPage
+from pages.controlpanelpages.all_options_page import AllOptionsCpPage
+
 
 config = configparser.ConfigParser()
 config.read('ini_config/config.ini')
@@ -47,6 +50,7 @@ class TestLoginKeyCloack():
         auth_form = KeycloackAuthForm(driver, url=CP_URL)
         auth_form.login(EMAIL, USER_PASS)
         assert 'Панель управления' == driver.title, "Wrong title of page, or wrong page was loaded"
-        top_bar = TopBarCpPage(driver, CP_URL)
+        #
+        top_bar = TopBarCpPage(driver, url=CP_URL)
         top_bar.click_open_profile_dropdown().click_deauth_button()
         assert auth_form.is_title_correct('Авторизация в internal'), "Wrong title after logout"
