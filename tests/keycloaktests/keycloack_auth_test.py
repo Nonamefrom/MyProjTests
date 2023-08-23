@@ -6,6 +6,7 @@ from pages.base_page import BasePage
 from pages.keycloack_auth_page import KeycloackAuthForm
 from pages.controlpanelpages.topbar_cp_page import TopBarCpPage
 from pages.controlpanelpages.all_options_page import AllOptionsCpPage
+from pages.controlpanelpages.add_new_option_page import AddNewOptionCpPage
 
 
 config = configparser.ConfigParser()
@@ -51,6 +52,15 @@ class TestLoginKeyCloack():
         auth_form.login(EMAIL, USER_PASS)
         assert 'Панель управления' == driver.title, "Wrong title of page, or wrong page was loaded"
         #
+        all_options = AllOptionsCpPage(driver, url=CP_URL)
+        all_options.click_add_new_option()
+        time.sleep(2)
+        add_new = AddNewOptionCpPage(driver, url=CP_URL)
+        add_new.enable_massage_users()
+        time.sleep(2)
+        add_new.input_massage_users('Дарова')
+        add_new.set_viewtime_massage_users('2402451')
+        time.sleep(2)
         top_bar = TopBarCpPage(driver, url=CP_URL)
         top_bar.click_open_profile_dropdown().click_deauth_button()
         assert auth_form.is_title_correct('Авторизация в internal'), "Wrong title after logout"

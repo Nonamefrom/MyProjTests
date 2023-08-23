@@ -18,7 +18,7 @@ class AllOptionsCpPage(BasePage):
     DATE_START_ASC = (By.XPATH, '//span[contains(text(),"Дата старта (от новых к старым)")]')
     DATE_END_DESC = (By.XPATH, '//span[contains(text(),"Дата окончания (от старых к новым)")]')
     DATE_END_ASC = (By.XPATH, '//span[contains(text(),"Дата окончания (от новых к старым)")]')
-    ADD_NEW_OPTION = (By.XPATH, '//span[@class="sa-button__content"]')
+    ADD_NEW_OPTION = (By.XPATH, '//span[contains(text(),"добавить новую")]')
     VIEW_NEXT_OPTIONS_PAGE = (By.XPATH, '//span[5]')
 
 
