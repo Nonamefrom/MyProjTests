@@ -128,7 +128,7 @@ class AddNewOptionCpPage(BasePage):
             element = wait(self.driver, timeout=5).until(EC.visibility_of_element_located(self.NOTIF_LIFETIME)            )
             element.click()
             for digit in text:
-                element.send_keys(Keys.END, digit)
+                element.send_keys(digit)
                 time.sleep(1)
         except Exception as e:
             print(f"An error occurred: {e}")
