@@ -2,6 +2,7 @@ import allure
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from pages.base_page import BasePage
+from utils.exceptions.not_found_exception import NotFoundException
 
 class AllOptionsCpPage(BasePage):
     FILTER_DRDWN = (By.XPATH, '//div[@class="options-filters__filter mb-6 mr-4"]//div[@class="sa-select__simple-text"]')
@@ -88,4 +89,4 @@ class AllOptionsCpPage(BasePage):
                 if self.find_view_next_page():
                     self.click_view_next_page()
                 else:
-                    raise Exception(f"Элемент '{elem}' не найден")
+                    raise NotFoundException(f"Элемент '{elem}' не найден") from TimeoutException

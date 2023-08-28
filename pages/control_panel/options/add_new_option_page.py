@@ -123,7 +123,7 @@ class AddNewOptionCpPage(BasePage):
             for digit in text:
                 element.send_keys(digit)
                 time.sleep(0.1)
-        except Exception as exception:
+        except TimeoutError as exception:
             print(f"An error occurred: {exception}")
 
     @allure.step("Установка почты менеджеров")
