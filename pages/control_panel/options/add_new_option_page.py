@@ -4,6 +4,7 @@ import allure
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.remote.webelement import WebElement
 from pages.base_page import BasePage
 
 
@@ -118,7 +119,7 @@ class AddNewOptionCpPage(BasePage):
     @allure.step("Установка времени отображения Сообщения пользователям")
     def set_viewtime_massage_users(self, text):
         try:
-            element = wait(self.driver, timeout=5).until(EC.visibility_of_element_located(self.NOTIF_LIFETIME))
+            element: WebElement = wait(self.driver, timeout=5).until(EC.visibility_of_element_located(self.NOTIF_LIFETIME))
             element.click()
             for digit in text:
                 element.send_keys(digit)
