@@ -1,14 +1,12 @@
 import pytest
 from selenium import webdriver
-#from selenium.webdriver.chrome.service import Service as ChromeService
-#from webdriver_manager.chrome import ChromeDriverManager
 
-
+from utils.env import Env
 @pytest.fixture(scope='function')
 def driver():
     options = webdriver.ChromeOptions()
     web_driver = webdriver.Remote(
-        command_executor="http://chrome:4444/wd/hub",
+        command_executor=f"{Env().remote_webdriver_url}",
         options=options
     )
     web_driver.maximize_window()

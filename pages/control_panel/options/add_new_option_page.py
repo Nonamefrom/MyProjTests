@@ -1,13 +1,9 @@
 import time
-
 import allure
+
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException
-from selenium.common.exceptions import StaleElementReferenceException
-from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
 from pages.base_page import BasePage
 
 
@@ -36,9 +32,6 @@ class AddNewOptionCpPage(BasePage):
     MANAGER_MAILS = (By.XPATH, '(//input[@type="text"])[5]')
     MANAGER_ERROR = (By.XPATH,
                      '//div[@class="option-form__notification-emails"]//div[@class="sa-input__messages-wrapper"]//div[1])')
-
-    def __init__(self, driver, url):
-        super().__init__(driver, url)
 
     @allure.step("Вернутся на экран Опций")
     def go_to_all_option(self):
@@ -125,13 +118,13 @@ class AddNewOptionCpPage(BasePage):
     @allure.step("Установка времени отображения Сообщения пользователям")
     def set_viewtime_massage_users(self, text):
         try:
-            element = wait(self.driver, timeout=5).until(EC.visibility_of_element_located(self.NOTIF_LIFETIME)            )
+            element = wait(self.driver, timeout=5).until(EC.visibility_of_element_located(self.NOTIF_LIFETIME))
             element.click()
             for digit in text:
                 element.send_keys(digit)
-                time.sleep(1)
-        except Exception as e:
-            print(f"An error occurred: {e}")
+                time.sleep(0.1)
+        except Exception as exception:
+            print(f"An error occurred: {exception}")
 
     @allure.step("Установка почты менеджеров")
     def set_managers_mail(self, text):
@@ -139,10 +132,5 @@ class AddNewOptionCpPage(BasePage):
 
     @allure.step("Получение текста при пустующем поле Сообщения клиентов")
     def error_empty_massage_clients(self):
-        phrase = wait.until(EC.visibility_of_element_located(self.ERROR_NOTIF_CLIENT)).text
-        return phrase
-
-    @allure.step("Получение текста при невалидных мейлах менеджеров")
-    def error_empty_massage_clients(self):
-        phrase = wait.until(EC.visibility_of_element_located(self.ERROR_NOTIF_CLIENT)).text
+        phrase = wait(self.driver, timeout=5).until(EC.visibility_of_element_located(self.ERROR_NOTIF_CLIENT)).text
         return phrase

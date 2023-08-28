@@ -1,7 +1,5 @@
 import allure
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from pages.base_page import BasePage
 
 class SideBarCpPage(BasePage):
@@ -12,11 +10,6 @@ class SideBarCpPage(BasePage):
     STATISTIC = (By.XPATH, '//a[@href="/statistic"]')
     DOWNLOADED_FILES = (By.XPATH, '//a[@href="/files"]')
     JOURNAL = (By.XPATH, '//a[@href="/analytics"]')
-
-
-
-    def __init__(self, driver, url):
-        super().__init__(driver, url)
 
     @allure.step("Переход на вкладку Опции")
     def click_options(self):
