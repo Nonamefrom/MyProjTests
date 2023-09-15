@@ -1,12 +1,8 @@
 import allure
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
-from selenium.common.exceptions import StaleElementReferenceException
-from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.support.ui import WebDriverWait as wait
-from selenium.webdriver.support import expected_conditions as EC
 from pages.base_page import BasePage
-
+from utils.exceptions.not_found_exception import NotFoundException
 
 class AllOptionsCpPage(BasePage):
     FILTER_DRDWN = (By.XPATH, '//div[@class="options-filters__filter mb-6 mr-4"]//div[@class="sa-select__simple-text"]')
@@ -18,12 +14,8 @@ class AllOptionsCpPage(BasePage):
     DATE_START_ASC = (By.XPATH, '//span[contains(text(),"Дата старта (от новых к старым)")]')
     DATE_END_DESC = (By.XPATH, '//span[contains(text(),"Дата окончания (от старых к новым)")]')
     DATE_END_ASC = (By.XPATH, '//span[contains(text(),"Дата окончания (от новых к старым)")]')
-    ADD_NEW_OPTION = (By.XPATH, '//span[@class="sa-button__content"]')
+    ADD_NEW_OPTION = (By.XPATH, '//button[@type="button"]')
     VIEW_NEXT_OPTIONS_PAGE = (By.XPATH, '//span[5]')
-
-
-    def __init__(self, driver, url):
-        super().__init__(driver, url)
 
     @allure.step("Включить фильтр Любой статус опции")
     def click_filter_anystatus(self):
@@ -97,5 +89,4 @@ class AllOptionsCpPage(BasePage):
                 if self.find_view_next_page():
                     self.click_view_next_page()
                 else:
-                    raise Exception(f"Элемент '{elem}' не найден")
-
+                    raise NotFoundException(f"Элемент '{elem}' не найден") from TimeoutException

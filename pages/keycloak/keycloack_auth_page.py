@@ -13,9 +13,6 @@ class KeycloackAuthForm(BasePage):
     REMEMBER_ME = (By.XPATH, '//div[@name="rememberMe"]')
     ERROR_MESSAGE = (By.XPATH, '//div[@class="sa-input__message"]')
 
-    def __init__(self, driver, url):
-        super().__init__(driver, url)
-
     @allure.step("Ввод текста в поля и нажатие кнопки авторизоваться")
     def login(self, email, password):
         self.fill_text(self.NAME_BAR, email)
