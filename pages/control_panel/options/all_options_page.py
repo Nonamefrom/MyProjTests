@@ -14,7 +14,7 @@ class AllOptionsCpPage(BasePage):
     DATE_START_ASC = (By.XPATH, '//span[contains(text(),"Дата старта (от новых к старым)")]')
     DATE_END_DESC = (By.XPATH, '//span[contains(text(),"Дата окончания (от старых к новым)")]')
     DATE_END_ASC = (By.XPATH, '//span[contains(text(),"Дата окончания (от новых к старым)")]')
-    ADD_NEW_OPTION = (By.XPATH, '//span[contains(text(),"добавить новую")]')
+    ADD_NEW_OPTION = (By.XPATH, '//button[@type="button"]')
     VIEW_NEXT_OPTIONS_PAGE = (By.XPATH, '//span[5]')
 
     @allure.step("Включить фильтр Любой статус опции")

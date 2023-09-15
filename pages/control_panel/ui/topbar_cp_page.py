@@ -7,7 +7,7 @@ class TopBarCpPage(BasePage):
     LINK_TO_MAIN_PAGE = (By.XPATH, '//span[@class="base-header__title web text-h3"]')
     OPEN_PROFILE_DROPDOWN = (By.XPATH, '//h4[@class="base-header-profile__title"]')
     LINK_TO_PROFILE_PAGE = (By.XPATH, '//div[@class="menu__item-text text-h4-bold mr-3"]')
-    DEAUTH_BUTTON = (By.XPATH, '//div[@class="menu__item-text text-h4-bold mr-3 red"]')
+    DEAUTH_BUTTON = (By.XPATH, '//div[contains(text(),"Выход из приложения")]')
 
     @allure.step("Открытие дропдауна профиль в ПУ")
     def click_open_profile_dropdown(self):

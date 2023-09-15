@@ -20,6 +20,7 @@ class AddNewOptionCpPage(BasePage):
     SET_FTS_CORDIANT_SERVICE = (By.XPATH, '//span[contains(text(),"Бшм cordiant")]')
     SET_FTS_VIATTI_SERVICE = (By.XPATH, '//span[contains(text(),"Бшм viatti")]')
     SET_WARRANTY_SERVICE = (By.XPATH, '//span[contains(text(),"Расширенная гарантия")]')
+    SET_FTS_LANDSAIL_SERVICE = (By.XPATH, '//span[contains(text(),"Бшм landsail")]')
     CHCKBX_AUTOLIMIT_DISABLE = (By.XPATH, '(//label[contains(text(),"Включить автолимиты")])[1]')
     SET_PWZ_SERVICE = (By.XPATH, '//span[contains(text(),"Пункт выдачи заказов")]')
     SET_STARTDATE_OPTION = (By.XPATH, '(//input[@type="datetime-local"])[1]')
@@ -82,6 +83,10 @@ class AddNewOptionCpPage(BasePage):
         self.click(self.DRDWN_OPTION_TYPE)
         self.click(self.SET_WARRANTY_SERVICE)
 
+    @allure.step("Выбрать сервис БШМ Лендсеил")
+    def set_fts_landsail_type(self):
+        self.click(self.DRDWN_OPTION_TYPE)
+        self.click(self.SET_FTS_LANDSAIL_SERVICE)
     @allure.step("Выключение автолимита гарантии")
     def disable_autolimit_warranty(self):
         self.click(self.CHCKBX_AUTOLIMIT_DISABLE)
