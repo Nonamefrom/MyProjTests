@@ -17,6 +17,8 @@ config = configparser.ConfigParser()
 config.read('ini_config/config.ini')
 
 CP_URL = f"{Env().cp_url}/auth/login"
+SB_URL = f"{Env().sb_url}/"
+PWZ_URL = f"{Env().pwz_url}/auth/login"
 MAIL_PIT_URL = f"{Env().mailpit}/"
 EMAIL = config.get('credentials', 'EMAIL')
 INTERNAL_MAIL = config.get('credentials', 'INTERNAL_MAIL')
@@ -29,8 +31,8 @@ ERROR_PASS_TEXT = config.get('expected_results', 'PASS_ARE_DIFF')
 
 
 @allure.suite("Тесты авторизации")
-@allure.sub_suite("Набор тестов Панели Управления")
-class TestLoginKeyCloack():
+@allure.sub_suite("Набор тестов авторизации Панели Управления")
+class TestLoginControlPanel():
 
     @allure.title("Запрет авторизации сущест. пользователя с неправильным паролем")
     def test_login_wrong_pass(self, driver):
@@ -81,3 +83,58 @@ class TestLoginKeyCloack():
         assert ERROR_PASS_TEXT == auth_form.error_pass_are_diff(), "Wrong error-text or not found"
         auth_form.accept_pass_for_restore(INTERNAL_PASS)
         assert 'Панель управления' == driver.title, "Wrong title of page, or wrong page was loaded"
+
+@allure.sub_suite("Набор тестов авторизации Онлайн Записи")
+class TestLoginServiceBooking():
+
+    @allure.title("Запрет авторизации сущест. b2b пользователя с неправильным паролем")
+    def test_sb_login_b2b_wrong_pass(self, driver):
+        page = BasePage(driver, SB_URL)
+        page.open()
+        sb_auth_form = KeycloackAuthForm(driver, url=SB_URL)
+        sb_auth_form.login_sb_b2b(EMAIL, WRONG_USER_PASS)
+        assert ERROR_TEXT == sb_auth_form.error_message(), "Wrong error text"
+
+    @allure.title("Запрет авторизации НЕсущест. b2b пользователя с правильным паролем")
+    def test_sb_login_b2b_wrong_mail(self, driver):
+        page = BasePage(driver, SB_URL)
+        page.open()
+        sb_auth_form = KeycloackAuthForm(driver, url=SB_URL)
+        sb_auth_form.login_sb_b2b(WRONG_MAIL, USER_PASS)
+        assert ERROR_TEXT == sb_auth_form.error_message(), "Wrong error text"
+
+    @allure.title("Авторизация корректного b2b пользователя")
+    def test_sb_login_correct_user(self, driver):
+        page = BasePage(driver, SB_URL)
+        page.open()
+        sb_auth_form = KeycloackAuthForm(driver, url=SB_URL)
+        sb_auth_form.login_sb_b2b(EMAIL, USER_PASS)
+        time.sleep(2)
+        assert 'Онлайн-запись' in driver.title, "Wrong title of page, or wrong page was loaded"
+        top_bar = TopBarCpPage(driver, url=SB_URL)
+        top_bar.click_open_profile_dropdown().click_deauth_button()
+        time.sleep(1)
+        assert sb_auth_form.is_title_correct('Авторизация в internal'), "Wrong title after logout"
+"""
+    @allure.title("Восстановление почты пользователя + Кейс несовпадения вводимых новых паролей")
+    def test_recovery_mail(self, driver):
+        page = BasePage(driver, SB_URL)
+        page.open()
+        sb_auth_form = KeycloackAuthForm(driver, url=SB_URL)
+        sb_auth_form.click_forgot_pass()
+        sb_auth_form.input_recovery_mail(INTERNAL_MAIL)
+        driver.execute_script("window.open('', '_blank');")
+        # Переключение контекста на вторую вкладку
+        driver.switch_to.window(driver.window_handles[1])
+        mailpit_page = MailPitMain(driver, MAIL_PIT_URL)
+        mailpit_page.open()
+        mailpit_page.find_by_client(INTERNAL_MAIL)
+        mailpit_page.click_restore_url(driver)
+        # Переключение контекста на третью вкладку
+        driver.switch_to.window(driver.window_handles[2])
+        auth_form.input_different_pass(INTERNAL_PASS, WRONG_USER_PASS)
+        # Проверка несовпадения паролей
+        assert ERROR_PASS_TEXT == auth_form.error_pass_are_diff(), "Wrong error-text or not found"
+        auth_form.accept_pass_for_restore(INTERNAL_PASS)
+        assert 'Панель управления' == driver.title, "Wrong title of page, or wrong page was loaded"
+"""

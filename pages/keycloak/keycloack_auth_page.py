@@ -19,10 +19,42 @@ class KeycloackAuthForm(BasePage):
     REPEAT_NEW_PASS = (By.XPATH, '//input[@name="password-confirm"]')
     SAVE_NEW_PASS = (By.XPATH, '//span[@class="sa-button__content"]')
     PASS_ARE_DIFF = (By.XPATH, '//div[contains(text(),"Пароли не совпадают.")]')
-
+    WELCOME_SB_BUTTON = (By.XPATH, '//a[@href="/auth/login"]')
+    B2B_USER_BUTTON = (By.XPATH, '(//button)[1]')
+    INTERNAL_USER_BUTTON = (By.XPATH, '(//button)[2]')
 
     @allure.step("Ввод текста в поля и нажатие кнопки авторизоваться")
     def login(self, email, password):
+        self.fill_text(self.NAME_BAR, email)
+        self.fill_text(self.PASSWORD_BAR, password)
+        self.click(self.SUBMIT_BUTTON)
+
+    @allure.step("Переход - велком стр., клик сотрудник ОЗ, ввод мейла и пароля")
+    def login_sb_b2b(self, email, password):
+        self.click(self.WELCOME_SB_BUTTON)
+        self.click(self.B2B_USER_BUTTON)
+        self.fill_text(self.NAME_BAR, email)
+        self.fill_text(self.PASSWORD_BAR, password)
+        self.click(self.SUBMIT_BUTTON)
+
+    @allure.step("Переход - велком стр., клик оператор ОЗ, ввод мейла и пароля")
+    def login_sb_internal(self, email, password):
+        self.click(self.WELCOME_SB_BUTTON)
+        self.click(self.INTERNAL_USER_BUTTON)
+        self.fill_text(self.NAME_BAR, email)
+        self.fill_text(self.PASSWORD_BAR, password)
+        self.click(self.SUBMIT_BUTTON)
+
+    @allure.step("Переход - велком стр., клик сотрудник ПВЗ, ввод мейла и пароля")
+    def login_b2b(self, email, password):
+        self.click(self.B2B_USER_BUTTON)
+        self.fill_text(self.NAME_BAR, email)
+        self.fill_text(self.PASSWORD_BAR, password)
+        self.click(self.SUBMIT_BUTTON)
+
+    @allure.step("Переход - велком стр., клик оператор ПВЗ, ввод мейла и пароля")
+    def login_internal(self, email, password):
+        self.click(self.INTERNAL_USER_BUTTON)
         self.fill_text(self.NAME_BAR, email)
         self.fill_text(self.PASSWORD_BAR, password)
         self.click(self.SUBMIT_BUTTON)
