@@ -99,3 +99,8 @@ class KeycloackAuthForm(BasePage):
         wait = WebDriverWait(self.driver, 10)
         phrase = wait.until(EC.visibility_of_element_located(self.PASS_ARE_DIFF)).text
         return phrase
+
+    @allure.step("Отображение переходов b2b или internal")
+    def check_b2b_internal_buttons(self):
+        self.element_is_visible(self.B2B_USER_BUTTON)
+        self.element_is_visible(self.INTERNAL_USER_BUTTON)

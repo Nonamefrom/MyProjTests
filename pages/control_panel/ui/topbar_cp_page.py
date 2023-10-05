@@ -5,9 +5,9 @@ from pages.base_page import BasePage
 
 class TopBarCpPage(BasePage):
     LINK_TO_MAIN_PAGE = (By.XPATH, '//span[@class="base-header__title web text-h3"]')
-    OPEN_PROFILE_DROPDOWN = (By.XPATH, '//h4[@class="base-header-profile__title"]')
+    OPEN_PROFILE_DROPDOWN = (By.XPATH, '(//*[name()="path"][@fill-rule="evenodd"])[1]')
     LINK_TO_PROFILE_PAGE = (By.XPATH, '//div[@class="menu__item-text text-h4-bold mr-3"]')
-    DEAUTH_BUTTON = (By.XPATH, '//div[contains(text(),"Выход из приложения")]')
+    DEAUTH_BUTTON = (By.XPATH, '(//*[name()="svg"][@class="sa-icon sa-icon--name--Exit"])[1]')
 
     @allure.step("Открытие дропдауна профиль в ПУ")
     def click_open_profile_dropdown(self):

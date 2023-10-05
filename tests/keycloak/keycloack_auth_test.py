@@ -9,6 +9,7 @@ from pages.control_panel.ui.topbar_cp_page import TopBarCpPage
 from pages.control_panel.options.all_options_page import AllOptionsCpPage
 from pages.control_panel.options.add_new_option_page import AddNewOptionCpPage
 from pages.mailpit.mailpit_main import MailPitMain
+from pages.service_booking.service_booking_mainpage import Service_BookingMainPage
 from selenium.webdriver.common.action_chains import ActionChains
 
 
@@ -26,8 +27,9 @@ INTERNAL_PASS = config.get('credentials', 'INTERNAL_PASS')
 WRONG_MAIL = config.get('credentials', 'WRONG_MAIL')
 WRONG_USER_PASS = config.get('credentials', 'WRONG_USER_PASS')
 USER_PASS = config.get('credentials', 'USER_PASS')
-ERROR_TEXT = config.get('expected_results', 'ERROR_TEXT')
+ERROR_LOGIN_TEXT = config.get('expected_results', 'ERROR_TEXT')
 ERROR_PASS_TEXT = config.get('expected_results', 'PASS_ARE_DIFF')
+SB_H1_TEXT = config.get('expected_results', 'SERVICE_BOOKING_H1')
 
 
 @allure.suite("Тесты авторизации")
@@ -40,7 +42,7 @@ class TestLoginControlPanel():
         page.open()
         auth_form = KeycloackAuthForm(driver, url=CP_URL)
         auth_form.login(EMAIL, WRONG_USER_PASS)
-        assert ERROR_TEXT == auth_form.error_message(), "Wrong error text"
+        assert ERROR_LOGIN_TEXT == auth_form.error_message(), "Wrong error text"
 
     @allure.title("Запрет авторизации НЕсущест. пользователя с правильным паролем")
     def test_login_wrong_mail(self, driver):
@@ -48,7 +50,7 @@ class TestLoginControlPanel():
         page.open()
         auth_form = KeycloackAuthForm(driver, url=CP_URL)
         auth_form.login(WRONG_MAIL, USER_PASS)
-        assert ERROR_TEXT == auth_form.error_message(), "Wrong error text"
+        assert ERROR_LOGIN_TEXT == auth_form.error_message(), "Wrong error text"
 
     @allure.title("Авторизация корректного пользователя")
     def test_login_correct_user(self, driver):
@@ -93,7 +95,7 @@ class TestLoginServiceBooking():
         page.open()
         sb_auth_form = KeycloackAuthForm(driver, url=SB_URL)
         sb_auth_form.login_sb_b2b(EMAIL, WRONG_USER_PASS)
-        assert ERROR_TEXT == sb_auth_form.error_message(), "Wrong error text"
+        assert ERROR_LOGIN_TEXT == sb_auth_form.error_message(), "Wrong error text"
 
     @allure.title("Запрет авторизации НЕсущест. b2b пользователя с правильным паролем")
     def test_sb_login_b2b_wrong_mail(self, driver):
@@ -101,7 +103,7 @@ class TestLoginServiceBooking():
         page.open()
         sb_auth_form = KeycloackAuthForm(driver, url=SB_URL)
         sb_auth_form.login_sb_b2b(WRONG_MAIL, USER_PASS)
-        assert ERROR_TEXT == sb_auth_form.error_message(), "Wrong error text"
+        assert ERROR_LOGIN_TEXT == sb_auth_form.error_message(), "Wrong error text"
 
     @allure.title("Авторизация корректного b2b пользователя")
     def test_sb_login_correct_user(self, driver):
@@ -109,11 +111,12 @@ class TestLoginServiceBooking():
         page.open()
         sb_auth_form = KeycloackAuthForm(driver, url=SB_URL)
         sb_auth_form.login_sb_internal(EMAIL, USER_PASS)
-        assert 'Онлайн-Запись' == driver.title, "Wrong title of page, or wrong page was loaded"
+        sb_main = Service_BookingMainPage(driver, url=SB_URL)
+        assert SB_H1_TEXT == sb_main.sb_h1_text(), f"Expected '{SB_H1_TEXT}' but got '{sb_main.sb_h1_text()}'"
         top_bar = TopBarCpPage(driver, url=SB_URL)
         top_bar.click_open_profile_dropdown().click_deauth_button()
         time.sleep(1)
-        assert sb_auth_form.is_title_correct('Онлайн-Запись'), "Wrong title after logout"
+        assert sb_auth_form.check_b2b_internal_buttons() == TRUE, "Wrong title after logout"
 """
     @allure.title("Восстановление почты пользователя + Кейс несовпадения вводимых новых паролей")
     def test_recovery_mail(self, driver):
