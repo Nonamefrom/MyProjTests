@@ -108,13 +108,12 @@ class TestLoginServiceBooking():
         page = BasePage(driver, SB_URL)
         page.open()
         sb_auth_form = KeycloackAuthForm(driver, url=SB_URL)
-        sb_auth_form.login_sb_b2b(EMAIL, USER_PASS)
-        time.sleep(2)
-        assert 'Онлайн-запись' in driver.title, "Wrong title of page, or wrong page was loaded"
+        sb_auth_form.login_sb_internal(EMAIL, USER_PASS)
+        assert 'Онлайн-Запись' == driver.title, "Wrong title of page, or wrong page was loaded"
         top_bar = TopBarCpPage(driver, url=SB_URL)
         top_bar.click_open_profile_dropdown().click_deauth_button()
         time.sleep(1)
-        assert sb_auth_form.is_title_correct('Авторизация в internal'), "Wrong title after logout"
+        assert sb_auth_form.is_title_correct('Онлайн-Запись'), "Wrong title after logout"
 """
     @allure.title("Восстановление почты пользователя + Кейс несовпадения вводимых новых паролей")
     def test_recovery_mail(self, driver):

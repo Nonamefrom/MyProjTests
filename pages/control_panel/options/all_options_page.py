@@ -1,5 +1,7 @@
 import allure
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from pages.base_page import BasePage
 from utils.exceptions.not_found_exception import NotFoundException
@@ -16,6 +18,13 @@ class AllOptionsCpPage(BasePage):
     DATE_END_ASC = (By.XPATH, '//span[contains(text(),"Дата окончания (от новых к старым)")]')
     ADD_NEW_OPTION = (By.XPATH, '//button[@type="button"]')
     VIEW_NEXT_OPTIONS_PAGE = (By.XPATH, '//span[5]')
+    H1_TEXT = (By.XPATH, '//span[@class="text-h1"]')
+
+    @allure.step("Получение текста заголовка Н1")
+    def cp_h1_text(self):
+        wait = WebDriverWait(self.driver, 10)
+        phrase = wait.until(EC.visibility_of_element_located(self.H1_TEXT)).text
+        return phrase
 
     @allure.step("Включить фильтр Любой статус опции")
     def click_filter_anystatus(self):
