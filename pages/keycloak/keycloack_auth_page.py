@@ -1,7 +1,10 @@
+import time
+
 import allure
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 from pages.base_page import BasePage
 
 
@@ -22,39 +25,10 @@ class KeycloackAuthForm(BasePage):
     WELCOME_SB_BUTTON = (By.XPATH, '//a[@href="/auth/login"]')
     B2B_USER_BUTTON = (By.XPATH, '(//button)[1]')
     INTERNAL_USER_BUTTON = (By.XPATH, '(//button)[2]')
+    H1_AUTH_PAGE = ((By.XPATH, '(//h1)[1]'))
 
     @allure.step("Ввод текста в поля и нажатие кнопки авторизоваться")
     def login(self, email, password):
-        self.fill_text(self.NAME_BAR, email)
-        self.fill_text(self.PASSWORD_BAR, password)
-        self.click(self.SUBMIT_BUTTON)
-
-    @allure.step("Переход - велком стр., клик сотрудник ОЗ, ввод мейла и пароля")
-    def login_sb_b2b(self, email, password):
-        self.click(self.WELCOME_SB_BUTTON)
-        self.click(self.B2B_USER_BUTTON)
-        self.fill_text(self.NAME_BAR, email)
-        self.fill_text(self.PASSWORD_BAR, password)
-        self.click(self.SUBMIT_BUTTON)
-
-    @allure.step("Переход - велком стр., клик оператор ОЗ, ввод мейла и пароля")
-    def login_sb_internal(self, email, password):
-        self.click(self.WELCOME_SB_BUTTON)
-        self.click(self.INTERNAL_USER_BUTTON)
-        self.fill_text(self.NAME_BAR, email)
-        self.fill_text(self.PASSWORD_BAR, password)
-        self.click(self.SUBMIT_BUTTON)
-
-    @allure.step("Переход - велком стр., клик сотрудник ПВЗ, ввод мейла и пароля")
-    def login_b2b(self, email, password):
-        self.click(self.B2B_USER_BUTTON)
-        self.fill_text(self.NAME_BAR, email)
-        self.fill_text(self.PASSWORD_BAR, password)
-        self.click(self.SUBMIT_BUTTON)
-
-    @allure.step("Переход - велком стр., клик оператор ПВЗ, ввод мейла и пароля")
-    def login_internal(self, email, password):
-        self.click(self.INTERNAL_USER_BUTTON)
         self.fill_text(self.NAME_BAR, email)
         self.fill_text(self.PASSWORD_BAR, password)
         self.click(self.SUBMIT_BUTTON)
@@ -91,8 +65,10 @@ class KeycloackAuthForm(BasePage):
         self.click(self.SAVE_NEW_PASS)
 
     @allure.step("Получение текста title страницы")
-    def is_title_correct(self, expected_title):
-        return expected_title == self.driver.title
+    def check_auth_title(self):
+        wait = WebDriverWait(self.driver, 10)
+        phrase = wait.until(EC.visibility_of_element_located(self.PASS_ARE_DIFF)).text
+        return phrase
 
     @allure.step("Получение текста ошибки несовпадения вводимых паролей")
     def error_pass_are_diff(self):
@@ -100,7 +76,29 @@ class KeycloackAuthForm(BasePage):
         phrase = wait.until(EC.visibility_of_element_located(self.PASS_ARE_DIFF)).text
         return phrase
 
-    @allure.step("Отображение переходов b2b или internal")
+    # При успешном проходе возвращает None, его проверять в assert
+    @allure.step("Отображение кнопок b2b или internal")
     def check_b2b_internal_buttons(self):
-        self.element_is_visible(self.B2B_USER_BUTTON)
-        self.element_is_visible(self.INTERNAL_USER_BUTTON)
+        try:
+            self.element_is_visible(self.B2B_USER_BUTTON)
+            self.element_is_visible(self.INTERNAL_USER_BUTTON)
+            return True
+        except TimeoutException:
+            return False
+
+    @allure.step("Получение текста заголовка Н1")
+    def auth_h1_text(self):
+        wait = WebDriverWait(self.driver, 10)
+        phrase = wait.until(EC.visibility_of_element_located(self.H1_AUTH_PAGE)).text
+        return phrase
+
+    def go_to_login(self, role):
+        if not self.check_b2b_internal_buttons():
+            # Если кнопки не найдены, кликаем на WELCOME_SB_BUTTON
+            self.click(self.WELCOME_SB_BUTTON)
+        if role == "b2b":
+            self.click(self.B2B_USER_BUTTON)
+        elif role == "internal":
+            self.click(self.INTERNAL_USER_BUTTON)
+        else:
+            print("Недопустимая роль пользователя, или кнопки недоступны.")

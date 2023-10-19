@@ -5,12 +5,12 @@ from selenium.webdriver.support import expected_conditions as EC
 from pages.base_page import BasePage
 
 
-class ServiceBookingMainPage(BasePage):
-    H1_TEXT = (By.XPATH, '//span[@class="text-h1-bold"]')
+class PWZMainPage(BasePage):
+    PWZ_PAGE_H1_TEXT = (By.XPATH, '//div[contains(text(),"Список заказов")]')
 
     @allure.step("Получение текста заголовка Н1")
-    def sb_h1_text(self):
+    def pwz_h1_text(self):
         wait = WebDriverWait(self.driver, 10)
-        phrase = wait.until(EC.visibility_of_element_located(self.H1_TEXT)).text
+        phrase = wait.until(EC.visibility_of_element_located(self.PWZ_PAGE_H1_TEXT)).text
         return phrase
 # Стартовый набор локаторов и методов, необходимых для проверки авторизации, в дальнейшем будет расширено
