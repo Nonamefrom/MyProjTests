@@ -75,7 +75,7 @@ class MailPitMain(BasePage):
         self.click(self.DELETE_ALL)
 
     @allure.step("Отображать только не прочтенные")
-    def clear_mailbox(self):
+    def show_unread_letters(self):
         self.click(self.OPEN_UNREAD)
 
     @allure.step("Поиск письма по клиенту")
