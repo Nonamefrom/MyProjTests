@@ -102,3 +102,4 @@ class KeycloackAuthForm(BasePage):
             self.click(self.INTERNAL_USER_BUTTON)
         else:
             print("Недопустимая роль пользователя, или кнопки недоступны.")
+        return self
