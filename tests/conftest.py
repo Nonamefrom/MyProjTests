@@ -7,6 +7,9 @@ from pages.mailpit.mailpit_main import MailPitMain
 from pages.service_booking.service_booking_mainpage import ServiceBookingMainPage
 from pages.pwz.pwz_mainpage import PWZMainPage
 from pages.employee_dashboard.emp_dash_mainpage import EmpDashMainPage
+from pages.partner_cabinet.mim_page import MimAuthPage
+from pages.partner_cabinet.partner_landing import PartnerLandingPage
+from pages.partner_cabinet.partner_options_page import PartnerOptionsPage
 
 
 from utils.env import Env
@@ -16,6 +19,8 @@ SB_URL = f"{Env().sb_url}/"
 PWZ_URL = f"{Env().pwz_url}/auth/login"
 EMP_DASH_URL = f"{Env().emp_dash_url}/"
 MAIL_PIT_URL = f"{Env().mailpit}/"
+MIM_URL = f"{Env().mim_url}"
+CABINET_URL = f"{Env().partner_url}/"
 
 @pytest.fixture(scope='function')
 def driver():
@@ -42,6 +47,9 @@ class PageManager:  # pylint: disable=too-few-public-methods
         self.emp_dash_auth_form = KeycloackAuthForm(driver, EMP_DASH_URL)
         self.emp_dash_main = EmpDashMainPage(driver, url=EMP_DASH_URL)
         self.mailpit_page = MailPitMain(driver, MAIL_PIT_URL)
+        self.mim_page = MimAuthPage(driver, url=MIM_URL)
+        self.cabinet_landing_page = PartnerLandingPage(driver, url=CABINET_URL)
+        self.cabinet_page = PartnerOptionsPage(driver, url=CABINET_URL)
 
 @pytest.fixture
 def pages(driver):

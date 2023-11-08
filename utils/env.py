@@ -11,3 +11,5 @@ class Env():  # pylint: disable=too-few-public-methods
         self.pwz_url = os.getenv('PWZ_URL')
         self.emp_dash_url = os.getenv('EMP_DASH_URL')
         self.mailpit = os.getenv('MAILPIT')
+        self.partner_url = os.getenv('PARTNER_CABINET_URL')
+        self.mim_url = os.getenv('MIM_URL')
