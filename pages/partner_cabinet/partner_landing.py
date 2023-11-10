@@ -7,8 +7,7 @@ from pages.base_page import BasePage
 
 
 class PartnerLandingPage(BasePage):
-    FAKE_AUTH = (By.XPATH,
-                 '//a[@class="ml-2 sa-button sa-button--active sa-button--size--md sa-button--theme--primary"]')
+    FAKE_AUTH = (By.XPATH, '(//a[@type="button"])[6]')
     H1_TEXT = (By.XPATH, '//span[@class="yellow"]')
     FAKE_LOGIN_BUTTON = (By.XPATH, '// button[ @ type = "submit"]')
 

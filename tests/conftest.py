@@ -10,9 +10,11 @@ from pages.employee_dashboard.emp_dash_mainpage import EmpDashMainPage
 from pages.partner_cabinet.mim_page import MimAuthPage
 from pages.partner_cabinet.partner_landing import PartnerLandingPage
 from pages.partner_cabinet.partner_options_page import PartnerOptionsPage
-
-
+from pages.partner_cabinet.ui.sidebar_cabinet_page import SideBarCabinetPage
+from pages.partner_cabinet.ui.topbar_cabinet_page import TopBarCabinetPage
+from pages.partner_cabinet.profile_page import ProfilePageCabinet
 from utils.env import Env
+
 
 CP_URL = f"{Env().cp_url}/auth/login"
 SB_URL = f"{Env().sb_url}/"
@@ -21,6 +23,7 @@ EMP_DASH_URL = f"{Env().emp_dash_url}/"
 MAIL_PIT_URL = f"{Env().mailpit}/"
 MIM_URL = f"{Env().mim_url}"
 CABINET_URL = f"{Env().partner_url}/"
+
 
 @pytest.fixture(scope='function')
 def driver():
@@ -32,8 +35,19 @@ def driver():
     web_driver.maximize_window()
     yield web_driver
     web_driver.quit()
-
-
+""" Фикстура с опцией активации буфера обмена
+@pytest.fixture(scope='function')
+def driver():
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('--enable-clipboard')
+    web_driver = webdriver.Remote(
+        command_executor=f"{Env().remote_webdriver_url}",
+        options=chrome_options
+    )
+    web_driver.maximize_window()
+    yield web_driver
+    web_driver.quit()
+"""
 class PageManager:  # pylint: disable=too-few-public-methods
     def __init__(self, driver):
         self.driver = driver
@@ -50,6 +64,9 @@ class PageManager:  # pylint: disable=too-few-public-methods
         self.mim_page = MimAuthPage(driver, url=MIM_URL)
         self.cabinet_landing_page = PartnerLandingPage(driver, url=CABINET_URL)
         self.cabinet_page = PartnerOptionsPage(driver, url=CABINET_URL)
+        self.cabinet_side_bar = SideBarCabinetPage(driver, url=CABINET_URL)
+        self.cabinet_top_bar = TopBarCabinetPage(driver, url=CABINET_URL)
+        self.profile_page = ProfilePageCabinet(driver, url=CABINET_URL)
 
 @pytest.fixture
 def pages(driver):
