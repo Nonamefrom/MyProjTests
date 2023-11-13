@@ -1,9 +1,7 @@
 import allure
-from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from pages.base_page import BasePage
 
 
@@ -14,7 +12,7 @@ class ProfilePageCabinet(BasePage):
     REGION_BAR = (By.XPATH, '//input[@placeholder="Введите название"]')
     LOGIN_BAR = (By.XPATH, '//*[@data-qa="login"]')
     USER_NAME_BAR = (By.XPATH, '//*[@data-qa="user-name"]')
-    MAIL_BAR = (By.XPATH, '//*[@data-qa="email"]')
+    MAIL_BAR = (By.XPATH, '//*[@data-qa="email"]//input')
     REGISTRATION_DATE_BAR = (By.XPATH, '//*[@data-qa="user-created-at"]')
     CANCEL_BUTTON = (By.XPATH, '//*[@data-qa="cansel"]')
     SAVE_BUTTON = (By.XPATH, '//*[@data-qa="submit"]')
@@ -27,7 +25,7 @@ class ProfilePageCabinet(BasePage):
         return phrase
 
     @allure.step("Заголовок Н1 страницы")
-    def get_region(self):
+    def get_header_text(self):
         wait = WebDriverWait(self.driver, 10)
         phrase = wait.until(EC.visibility_of_element_located(self.REGION_NAME)).text
         return phrase
@@ -63,17 +61,7 @@ class ProfilePageCabinet(BasePage):
         return phrase
 
     @allure.step("Меил из поля страницы профиля")
-    def get_mail(self, timeout=10):
-        wait = WebDriverWait(self.driver, timeout)
+    def get_mail(self):
+        wait = WebDriverWait(self.driver, 10)
         element = wait.until(EC.visibility_of_element_located(self.MAIL_BAR))
-        self.copy_text_to_clipboard(element)
-        phrase = self.get_text_from_clipboard()
-        return phrase
-
-    def copy_text_to_clipboard(self, element):
-        # Используем JavaScript для выделения и копирования текста в буфер обмена
-        self.driver.execute_script("arguments[0].select(); document.execCommand('copy');", element)
-
-    def get_text_from_clipboard(self):
-        # Используем JavaScript для получения текста из буфера обмена
-        return self.driver.execute_script("return navigator.clipboard.readText();")
+        return element.get_attribute("value")

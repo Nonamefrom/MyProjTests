@@ -1,6 +1,7 @@
 import configparser
 import allure
 import pytest
+import time
 
 
 config = configparser.ConfigParser()

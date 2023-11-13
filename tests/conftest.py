@@ -35,19 +35,7 @@ def driver():
     web_driver.maximize_window()
     yield web_driver
     web_driver.quit()
-""" Фикстура с опцией активации буфера обмена
-@pytest.fixture(scope='function')
-def driver():
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument('--enable-clipboard')
-    web_driver = webdriver.Remote(
-        command_executor=f"{Env().remote_webdriver_url}",
-        options=chrome_options
-    )
-    web_driver.maximize_window()
-    yield web_driver
-    web_driver.quit()
-"""
+
 class PageManager:  # pylint: disable=too-few-public-methods
     def __init__(self, driver):
         self.driver = driver
