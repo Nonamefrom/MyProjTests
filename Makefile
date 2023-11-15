@@ -43,6 +43,8 @@ ps: ## Выводит список контейнеров и их статусы
 test: ## Запускает тесты с генерацией отчетов
 	@pytest ./tests/**/__init__.py --alluredir="./allure-results"
 
+
+
 lint: ## Запуск pylint для линтинга
 	@pylint "./**/*.py"
 

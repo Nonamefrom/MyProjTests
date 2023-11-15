@@ -24,8 +24,8 @@ class ProfilePageCabinet(BasePage):
         phrase = wait.until(EC.visibility_of_element_located(self.H1)).text
         return phrase
 
-    @allure.step("Заголовок Н1 страницы")
-    def get_header_text(self):
+    @allure.step("Получение региона из страницы профиля")
+    def get_region(self):
         wait = WebDriverWait(self.driver, 10)
         phrase = wait.until(EC.visibility_of_element_located(self.REGION_NAME)).text
         return phrase

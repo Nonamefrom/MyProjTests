@@ -12,7 +12,7 @@ class KeycloackAuthForm(BasePage):
     NAME_BAR = (By.XPATH, '//input[@name="username"]')
     PASSWORD_BAR = (By.XPATH, '//input[@name="password"]')
     SUBMIT_BUTTON = (By.XPATH, '//button[@value="Submit"]')
-    FORGOT_PASS = (By.XPATH, '//span[contains(text(),"Забыли пароль?")]')
+    FORGOT_PASS = (By.XPATH, '//a[@type="button"]//span[1]')
     REMEMBER_ME = (By.XPATH, '//div[@name="rememberMe"]')
     ERROR_MESSAGE = (By.XPATH, '//div[@class="sa-input__message"]')
     RECOVERY_MAIL = (By.XPATH, '//input[@type="text"]')
