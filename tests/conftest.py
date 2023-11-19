@@ -2,6 +2,7 @@ import pytest
 from selenium import webdriver
 from pages.keycloak.keycloack_auth_page import KeycloackAuthForm
 from pages.control_panel.ui.topbar_cp_page import TopBarCpPage
+from pages.control_panel.ui.sidebar_cp_page import SideBarCpPage
 from pages.control_panel.options.all_options_page import AllOptionsCpPage
 from pages.mailpit.mailpit_main import MailPitMain
 from pages.service_booking.service_booking_mainpage import ServiceBookingMainPage
@@ -13,6 +14,7 @@ from pages.partner_cabinet.partner_options_page import PartnerOptionsPage
 from pages.partner_cabinet.ui.sidebar_cabinet_page import SideBarCabinetPage
 from pages.partner_cabinet.ui.topbar_cabinet_page import TopBarCabinetPage
 from pages.partner_cabinet.profile_page import ProfilePageCabinet
+from steps.common_steps import CommonSteps
 from utils.env import Env
 
 
@@ -40,6 +42,7 @@ class PageManager:  # pylint: disable=too-few-public-methods
     def __init__(self, driver):
         self.driver = driver
         self.top_bar = TopBarCpPage(driver, url=CP_URL)
+        self.side_bar_cp = SideBarCpPage(driver, url=CP_URL)
         self.cp_auth_form = KeycloackAuthForm(driver, CP_URL)
         self.cp_main = AllOptionsCpPage(driver, url=CP_URL)
         self.sb_auth_form = KeycloackAuthForm(driver, url=SB_URL)
@@ -59,3 +62,13 @@ class PageManager:  # pylint: disable=too-few-public-methods
 @pytest.fixture
 def pages(driver):
     return PageManager(driver)
+
+class StepsManager:
+    def __init__(self, driver, url):
+        self.driver = driver
+        self.url = url
+        self.common_steps = CommonSteps(driver, url=self.url)
+
+@pytest.fixture
+def steps(driver):
+    return StepsManager(driver, url=CP_URL)

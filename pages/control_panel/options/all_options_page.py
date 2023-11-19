@@ -2,9 +2,7 @@ import allure
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
 from pages.base_page import BasePage
-from utils.exceptions.not_found_exception import NotFoundException
 
 class AllOptionsCpPage(BasePage):
     FILTER_DRDWN = (By.XPATH, '//div[@class="options-filters__filter mb-6 mr-4"]//div[@class="sa-select__simple-text"]')
@@ -17,7 +15,6 @@ class AllOptionsCpPage(BasePage):
     DATE_END_DESC = (By.XPATH, '//span[contains(text(),"Дата окончания (от старых к новым)")]')
     DATE_END_ASC = (By.XPATH, '//span[contains(text(),"Дата окончания (от новых к старым)")]')
     ADD_NEW_OPTION = (By.XPATH, '//button[@type="button"]')
-    VIEW_NEXT_OPTIONS_PAGE = (By.XPATH, '//span[5]')
     H1_TEXT = (By.XPATH, '//span[@class="text-h1"]')
 
     @allure.step("Получение текста заголовка Н1")
@@ -64,38 +61,3 @@ class AllOptionsCpPage(BasePage):
     @allure.step("Создать/Добавить новую опцию")
     def click_add_new_option(self):
         self.click(self.ADD_NEW_OPTION)
-
-    @allure.step("Переход на следующую страницу опций")
-    def click_view_next_page(self):
-        self.click(self.VIEW_NEXT_OPTIONS_PAGE)
-
-#Поиск и клик по наименованию опции, даты окончания действия, статусу публикации
-    @allure.step("Поиск элемента и клик элемента опции")
-    def find_element_of_option(self, elem):
-        find_locator = f'//div[contains(text(),"{elem}")]'
-        self.element_is_visible((By.XPATH, find_locator), timeout=5)
-        self.click((By.XPATH, find_locator), timeout=5)
-
-#Только поиск перехода на следующую страницу
-    def find_view_next_page(self):
-        self.element_is_visible(self.VIEW_NEXT_OPTIONS_PAGE)
-        return True
-
-#Только поиск элемента опции на странице по введенному параметру
-    def check_element_of_option(self, elem):
-        find_locator = f'//div[contains(text(),"{elem}")]'
-        self.element_is_visible((By.XPATH, find_locator), timeout=5)
-        return True
-
-#Функция перебора страниц в поиске элемента опции,
-    def find_option(self, elem):
-        while True:
-            try:
-                if self.check_element_of_option(elem):
-                    self.find_element_of_option(elem)
-                    break  # Выходим из цикла, если элемент найден
-            except TimeoutException:
-                if self.find_view_next_page():
-                    self.click_view_next_page()
-                else:
-                    raise NotFoundException(f"Элемент '{elem}' не найден") from TimeoutException
