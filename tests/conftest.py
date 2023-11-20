@@ -14,6 +14,7 @@ from pages.partner_cabinet.partner_options_page import PartnerOptionsPage
 from pages.partner_cabinet.ui.sidebar_cabinet_page import SideBarCabinetPage
 from pages.partner_cabinet.ui.topbar_cabinet_page import TopBarCabinetPage
 from pages.partner_cabinet.profile_page import ProfilePageCabinet
+from pages.partner_cabinet.b2b_empoyee_page import B2bEmployeePageCab
 from steps.common_steps import CommonSteps
 from utils.env import Env
 
@@ -58,6 +59,7 @@ class PageManager:  # pylint: disable=too-few-public-methods
         self.cabinet_side_bar = SideBarCabinetPage(driver, url=CABINET_URL)
         self.cabinet_top_bar = TopBarCabinetPage(driver, url=CABINET_URL)
         self.profile_page = ProfilePageCabinet(driver, url=CABINET_URL)
+        self.b2b_employee_page = B2bEmployeePageCab(driver, url=CABINET_URL)
 
 @pytest.fixture
 def pages(driver):

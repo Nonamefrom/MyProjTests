@@ -32,6 +32,7 @@ class BasePage():
 
     def fill_text(self, locator, txt, timeout=3):
         element = wait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
+        element.click()
         element.clear()
         element.send_keys(txt)
 
