@@ -1,10 +1,11 @@
+#Методы для работы с таблицами: пользователи в Панели Управления
 import allure
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from pages.base_page import BasePage
 from utils.exceptions.not_found_exception import NotFoundException
 
-#Методы для работы с таблицами: пользователи в КУ ПУ, заказы ПВЗ, ОЗ
+
 class TablesSteps(BasePage):
     VIEW_NEXT_PAGE = (By.XPATH, '//*[@class="sa-icon sa-icon--name--Right sa-pagination__next-icon"]')
 
