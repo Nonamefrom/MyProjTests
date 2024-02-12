@@ -43,8 +43,7 @@ class TestCheck:
         pages.cabinet_side_bar.click_b2b_employee()#переход на страницу сотрудников
         # steps.tables_steps.find_option('ИмяТест2024-02-04-20.27.04')# юзер сверху страницы
         # steps.tables_steps.find_option('ИмяТест2024-01-30-17.33.53')# юзер снизу страницы
-        steps.tables_steps.find_option('ИмяТест2024-02-04-20.16.37')# юзер на 3ьей странице
-        time.sleep(5)
+        steps.tables_steps.find_entity('ИмяТест2024-02-04-20.16.37')# юзер на 3ьей странице
 
 
     @allure.title("Тест добавления юзера")
@@ -52,7 +51,6 @@ class TestCheck:
         pages.cp_auth_form.open().login(EMAIL, USER_PASS) # авторизация в ПУ DEV окружение
         steps.common_steps.find_elem('test2')# Поиск опции на 2ой странице, клик и перебор работает
         # pages.side_bar_cp.click_users()
-        time.sleep(5)
 
 
     """
