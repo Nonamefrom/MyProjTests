@@ -50,3 +50,19 @@ class TablesSteps(BasePage):
                     self.click_next_page_button()
                 else:
                     raise NotFoundException(f"Элемент '{text}' не найден") from TimeoutException
+
+    def count_find_entity(self, text):
+        count = 0
+        while True:
+            try:
+                if self.is_entity_exists_in_table(text):
+                    count += 1
+            except TimeoutException:
+                pass  # Пропускаем ошибку, если элемент не найден на текущей странице
+            try:
+                if not self.find_next_page_button():  # Если кнопка "Следующая страница" не найдена, выходим из цикла
+                    break
+                self.click_next_page_button()  # Переходим на следующую страницу
+            except TimeoutException:
+                break  # Если не удалось найти кнопку "Следующая страница", выходим из цикла
+        return count

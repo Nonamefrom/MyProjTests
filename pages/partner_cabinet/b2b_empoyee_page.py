@@ -10,6 +10,7 @@ class B2bEmployeePageCab(BasePage):
     H1_EMPLOYEE = (By.XPATH, '(//span[@class="text-h1-bold"])[1]')
     LINK_TO_DASHBOARD = (By.XPATH, '//a[contains(text(),"ссылке")]')
     COPY_LINK_CLIPBOARD = (By.XPATH, '//div[@class="sa-alert__after-wrapper"]//div//*[name()="svg"]')
+    BUBBLE_MASSAGE = (By.XPATH, '//*[@class="sa-snackbar__title"]')
     CALL_MODAL_MENU = (By.XPATH, '//span[@class="sa-button__content"]')
     NAME_INPUT = (By.XPATH, '//*[@data-qa="employee-first-name-input"]//input')
     LAST_NAME_INPUT = (By.XPATH, '//*[@data-qa="employee-last-name-input"]//input')
@@ -57,90 +58,110 @@ class B2bEmployeePageCab(BasePage):
     @allure.step("Вызов модалки добавления сотрудника")
     def call_modal_menu(self):
         self.click(self.CALL_MODAL_MENU)
+        return self
 
     @allure.step("Ввод имени")
     def input_name(self, text):
         self.fill_text(self.NAME_INPUT, text)
+        return self
 
     @allure.step("Ввод фамилии")
     def input_last_name(self, text):
         self.fill_text(self.LAST_NAME_INPUT, text)
+        return self
 
     @allure.step("Ввод мейла")
     def input_email(self, text):
         self.fill_text(self.EMAIL_INPUT, text)
+        return self
 
     @allure.step("Ввод телефона")
     def input_phone(self, text):
         self.fill_text(self.PHONE_INPUT, text)
+        return self
 
     @allure.step("Выбрать роль Руководитель")
     def set_supervisor_role(self):
         self.click(self.EMPLOYEE_POSITION)
         self.click(self.SUPERVISOR_EMPLOYEE)
+        return self
 
     @allure.step("Выбрать роль менеджер по продажам")
     def set_sales_manager_role(self):
         self.click(self.EMPLOYEE_POSITION)
         self.click(self.SALES_MANAGER_EMPLOYEE)
+        return self
 
     @allure.step("Выбрать роль сотрудник шиномонтажа")
     def set_tire_service_role(self):
         self.click(self.EMPLOYEE_POSITION)
         self.click(self.TIRE_SERVICE_EMPLOYEE)
+        return self
 
     @allure.step("Выбрать роль сотрудник автомойки")
     def set_car_wash_role(self):
         self.click(self.EMPLOYEE_POSITION)
         self.click(self.CAR_WASH_EMPLOYEE)
+        return self
 
     @allure.step("Выбрать роль сотрудник автосервиса")
     def set_car_service_role(self):
         self.click(self.EMPLOYEE_POSITION)
         self.click(self.CAR_SERVICE_EMPLOYEE)
+        return self
 
     @allure.step("Выбрать полный доступ к продуктам")
     def set_full_access(self):
         self.click(self.EMPLOYEE_ACCESS)
         self.click(self.SET_FULL_ACCESS)
+        return self
 
     @allure.step("Выбрать  доступ к выбранным продуктам")
     def set_chose_access(self):
         self.click(self.EMPLOYEE_ACCESS)
         self.click(self.SET_CHOSE_ACCESS)
+        return self
 
     @allure.step("Клик доступ к Онлайн записи")
     def set_online_record(self):
         self.click(self.SET_ONLINE_RECORD)
+        return self
 
     @allure.step("Клик доступ к ПВЗ")
     def set_access_pwz(self):
         self.click(self.SET_PWZ)
+        return self
 
     @allure.step("Клик доступ к Обучение")
     def set_access_education(self):
         self.click(self.SET_EDUCATION)
+        return self
 
     @allure.step("Клик доступ к Бесплатный шиномонтаж")
     def set_access_free_tire_service(self):
         self.click(self.SET_FREE_TIRE_SERVICE)
+        return self
 
     @allure.step("Клик доступ к Привилегии")
     def set_access_privilege(self):
         self.click(self.SET_PRIVILEGE)
+        return self
 
     @allure.step("Запретить доступ к продуктам")
     def decline_access(self):
         self.click(self.EMPLOYEE_ACCESS)
         self.click(self.DECLINE_ACCESS)
+        return self
 
     @allure.step("Клик 'Добавить'")
     def click_add_employee(self):
         self.click(self.ADD_EMPLOYEE)
+        return self
 
     @allure.step("Закрыть модалку ввода данных")
     def close_modal(self, text):
         self.fill_text(self.CLOSE_MODAL, text)
+        return self
 
     @allure.step("Получение текста ошибки пустых полей")
     def error_empty_massage_clients(self):
@@ -171,8 +192,16 @@ class B2bEmployeePageCab(BasePage):
     @allure.step("Клик удалить пользователя в окне редактирования")
     def delete_employee(self):
         self.click(self.DELETE_USER)
+        return self
+
 
     @allure.step("Подтверждение удаления")
     def accept_delete_employee(self):
         self.click(self.ACCEPT_DELETE)
+        self.driver.refresh()
+        return self
 
+    @allure.step("Получаем текст из бабл-уведолмения")
+    def get_bubble_text(self):
+        phrase = wait(self.driver, timeout=5).until(EC.visibility_of_element_located(self.BUBBLE_MASSAGE)).text
+        return phrase
