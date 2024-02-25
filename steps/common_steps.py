@@ -1,3 +1,7 @@
+# Методы работают с Новостями и опциями в Панели Управления
+# не срабатывает клик по опции
+import time
+
 import allure
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
@@ -10,6 +14,7 @@ class CommonSteps(BasePage):
 
     @allure.step("Переход на следующую страницу")
     def click_view_next_page(self):
+        time.sleep(0.5)
         self.click(self.VIEW_NEXT_PAGE)
 
 #ПУ - Поиск и клик по наименованию опции, даты окончания действия, статусу публикации
@@ -31,7 +36,7 @@ class CommonSteps(BasePage):
         return True
 
 #Функция перебора страниц в поиске элемента опции,
-    def find_option(self, elem):
+    def find_elem(self, elem):
         while True:
             try:
                 if self.check_element_on_page(elem):

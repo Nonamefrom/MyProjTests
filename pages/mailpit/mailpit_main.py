@@ -1,7 +1,7 @@
 import allure
 import time
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
 from pages.base_page import BasePage
 
@@ -21,6 +21,7 @@ class MailPitMain(BasePage):
     MARK_ALL_READ = (By.XPATH, '//button[normalize-space()="Mark all read"]')
     DELETE_ALL = (By.XPATH, '//button[normalize-space()="Delete all"]')
     RESTORE_URL = (By.XPATH, '//a[contains(text(),"Сбросить пароль")]')
+    MAIL_THEME = (By.XPATH, '(//tr)[13]')
 
 
     @allure.step("Ввод текста в поля и нажатие кнопки авторизоваться")
@@ -97,3 +98,11 @@ class MailPitMain(BasePage):
         iframe = driver.find_element(By.XPATH, '//iframe[@id="preview-html"]')  # Экземпляр iframe
         driver.switch_to.frame(iframe)  # Переход в iframe html документа
         self.click(self.RESTORE_URL)
+
+    @allure.step("Получение текста заголовка письма")
+    def mail_theme_text(self, driver):
+        time.sleep(2)
+        iframe = driver.find_element(By.XPATH, '//iframe[@id="preview-html"]')  # Экземпляр iframe
+        driver.switch_to.frame(iframe)
+        phrase = wait(driver, 1).until(EC.visibility_of_element_located(self.MAIL_THEME)).text
+        return phrase

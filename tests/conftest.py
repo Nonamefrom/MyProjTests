@@ -16,6 +16,7 @@ from pages.partner_cabinet.ui.topbar_cabinet_page import TopBarCabinetPage
 from pages.partner_cabinet.profile_page import ProfilePageCabinet
 from pages.partner_cabinet.b2b_empoyee_page import B2bEmployeePageCab
 from steps.common_steps import CommonSteps
+from steps.tables_steps import TablesSteps
 from utils.env import Env
 
 
@@ -70,6 +71,7 @@ class StepsManager:
         self.driver = driver
         self.url = url
         self.common_steps = CommonSteps(driver, url=self.url)
+        self.tables_steps = TablesSteps(driver, url=self.url)
 
 @pytest.fixture
 def steps(driver):
