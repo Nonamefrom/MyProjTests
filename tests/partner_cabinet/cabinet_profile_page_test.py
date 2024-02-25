@@ -18,6 +18,7 @@ MAIL_VALIDATION = config.get('expected_results', 'MAIL_VALIDATION_PROFILE_CAB')
 @allure.suite("Тесты страницы профиля")
 class TestProfileCabinet:
 
+    @allure.title("Тест валидации поля email")
     @pytest.mark.parametrize("email", ["abcdefghgfkjb@mail.ru", "123/.!@gmail.com"])
     def test_change_mail_in_profile(self, pages, email):
         pages.cabinet_landing_page.open().login_all_env(pages)
@@ -28,6 +29,7 @@ class TestProfileCabinet:
         new_mail = pages.profile_page.get_mail()
         assert old_mail is not new_mail, f"Expected '{old_mail}' not changes '{new_mail}'"
 
+    @allure.title("Тест валидации почты+деавторизация")
     def test_wrong_mail_in_profile_and_deauth(self, pages):
         pages.cabinet_landing_page.open().login_all_env(pages)
         pages.cabinet_top_bar.open_profile_dropdown().open_profile_user_cabinet()
@@ -38,6 +40,7 @@ class TestProfileCabinet:
         H1 = pages.cabinet_landing_page.partner_landing_h1_text()
         assert H1_LANDING == H1, f"Expected '{H1_LANDING}' but got '{H1}'"
 
+    @allure.title("Тест смены региона, его отображени в топбаре, и странице профиля")
     @pytest.mark.parametrize("region", ["Москва","Мурманская область","Тульская область"])
     def test_change_region_in_profile(self, pages, region):
         pages.cabinet_landing_page.open().login_all_env(pages)

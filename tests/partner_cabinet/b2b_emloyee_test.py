@@ -26,7 +26,9 @@ LAST_NAME = f"ФамилияТест{test_time}"
 MAIL = f'test{test_time}@mail.ru'
 
 
-class TestCheck:
+@allure.suite("Тесты страницы B2B сотрудников")
+class TestB2BEmployees:
+
     @allure.title("Тест невозможности регистрации повторно на один email")
     def test_add_and_delete_user(self, pages):
         expected_error = 'Сотрудник с таким Телефоном уже существует'
