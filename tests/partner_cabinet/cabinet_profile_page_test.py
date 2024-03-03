@@ -1,18 +1,13 @@
-import configparser
 import allure
 import pytest
 import time
+from data.test_data import ExpectedResults
+from data.test_data import RegData
 
 
-config = configparser.ConfigParser()
-config.read('ini_config/config.ini')
-
-
-H1_LANDING = config.get('expected_results', 'H1_LANDING_CABINET')
-EMAIL = 'abcdefghgfkjb@mail.ru'
-WRONG_MAIL = config.get('credentials', 'WRONG_MAIL')
-PART_CAB_H1 = config.get('expected_results', 'PARTNER_CABINET_H1')
-MAIL_VALIDATION = config.get('expected_results', 'MAIL_VALIDATION_PROFILE_CAB')
+H1_LANDING = ExpectedResults.H1_LANDING_CABINET
+WRONG_MAIL = RegData.WRONG_MAIL
+MAIL_VALIDATION = ExpectedResults.MAIL_VALIDATION_PROFILE_CAB
 
 
 @allure.suite("Тесты страницы профиля")

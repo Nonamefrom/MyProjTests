@@ -1,17 +1,13 @@
-import configparser
 import allure
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from pages.base_page import BasePage
+from data.test_data import RegData
 
 
-config = configparser.ConfigParser()
-config.read('ini_config/config.ini')
-
-
-MIM_LOGIN = config.get('credentials', 'MIM_LOGIN')
-MIM_PASS = config.get('credentials', 'MIM_PASS')
+MIM_LOGIN = RegData.MIM_LOGIN
+MIM_PASS = RegData.MIM_PASS
 
 
 class MimAuthPage(BasePage):
@@ -21,7 +17,6 @@ class MimAuthPage(BasePage):
     H1_LOGIN_PAGE = (By.XPATH, '//h1[contains(text(),"Войдите в МИМ")]')
     H1_MIM_PAGE = (By.XPATH, '//span[contains(text(),"МИМ")]')
     GO_TO_PARTNER_CABINET = (By.XPATH, '//a[contains(text(),"Кабинет услуг")]')
-
 
     @allure.step("Ввод текста в поля и нажатие кнопки Войти")
     def login_throw_mim(self, pages):

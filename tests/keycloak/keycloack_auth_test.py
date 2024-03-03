@@ -1,28 +1,22 @@
-import configparser
 import time
 import allure
+from data.test_data import ExpectedResults, RegData
 
 
-config = configparser.ConfigParser()
-config.read('ini_config/config.ini')
-
-
-EMAIL = config.get('credentials', 'EMAIL')
-INTERNAL_MAIL = config.get('credentials', 'INTERNAL_MAIL')
-INTERNAL_PASS = config.get('credentials', 'INTERNAL_PASS')
-B2B_MAIL = config.get('credentials', 'B2B_MAIL')
-B2B_PASS = config.get('credentials', 'B2B_PASS')
-WRONG_MAIL = config.get('credentials', 'WRONG_MAIL')
-WRONG_USER_PASS = config.get('credentials', 'WRONG_USER_PASS')
-USER_PASS = config.get('credentials', 'USER_PASS')
-ERROR_LOGIN_TEXT = config.get('expected_results', 'ERROR_TEXT')
-ERROR_PASS_TEXT = config.get('expected_results', 'PASS_ARE_DIFF')
-SB_H1_TEXT = config.get('expected_results', 'SERVICE_BOOKING_H1')
-CP_H1_TEXT = config.get('expected_results', 'CONTROL_PANEL_H1')
-B2B_H1_TEXT = config.get('expected_results', 'SERVICE_BOOKING_H1')
-INTERNAL_H1_TEXT = config.get('expected_results', 'SERVICE_BOOKING_H1')
-PWZ_H1_TEXT = config.get('expected_results', 'PWZ_H1')
-EMP_DASH_H1_TEXT = config.get('expected_results', 'EMP_DASH_H1')
+EMAIL = RegData.EMAIL
+INTERNAL_MAIL = RegData.INTERNAL_MAIL
+INTERNAL_PASS = RegData.INTERNAL_PASS
+B2B_MAIL = RegData.B2B_MAIL
+B2B_PASS = RegData.B2B_PASS
+WRONG_MAIL = RegData.WRONG_MAIL
+WRONG_USER_PASS = RegData.WRONG_USER_PASS
+USER_PASS = RegData.USER_PASS
+ERROR_LOGIN_TEXT = ExpectedResults.ERROR_TEXT
+ERROR_PASS_TEXT = ExpectedResults.PASS_ARE_DIFF
+SB_H1_TEXT = ExpectedResults.SERVICE_BOOKING_H1
+CP_H1_TEXT = ExpectedResults.CONTROL_PANEL_H1
+PWZ_H1_TEXT = ExpectedResults.PWZ_H1
+EMP_DASH_H1_TEXT = ExpectedResults.EMP_DASH_H1
 
 
 @allure.suite("Тесты авторизации")
