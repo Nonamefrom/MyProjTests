@@ -19,7 +19,6 @@ from steps.common_steps import CommonSteps
 from steps.tables_steps import TablesSteps
 from utils.env import Env
 
-
 CP_URL = f"{Env().cp_url}/auth/login"
 SB_URL = f"{Env().sb_url}/"
 PWZ_URL = f"{Env().pwz_url}/auth/login"
@@ -39,6 +38,7 @@ def driver():
     web_driver.maximize_window()
     yield web_driver
     web_driver.quit()
+
 
 class PageManager:  # pylint: disable=too-few-public-methods
     def __init__(self, driver):
@@ -62,9 +62,11 @@ class PageManager:  # pylint: disable=too-few-public-methods
         self.profile_page = ProfilePageCabinet(driver, url=CABINET_URL)
         self.b2b_employee_page = B2bEmployeePageCab(driver, url=CABINET_URL)
 
+
 @pytest.fixture
 def pages(driver):
     return PageManager(driver)
+
 
 class StepsManager:
     def __init__(self, driver, url):
@@ -72,6 +74,7 @@ class StepsManager:
         self.url = url
         self.common_steps = CommonSteps(driver, url=self.url)
         self.tables_steps = TablesSteps(driver, url=self.url)
+
 
 @pytest.fixture
 def steps(driver):
