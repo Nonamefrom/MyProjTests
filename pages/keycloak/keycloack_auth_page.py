@@ -25,7 +25,7 @@ class KeycloackAuthForm(BasePage):
     WELCOME_SB_BUTTON = (By.XPATH, '//a[@href="/auth/login"]')
     B2B_USER_BUTTON = (By.XPATH, '(//button)[1]')
     INTERNAL_USER_BUTTON = (By.XPATH, '(//button)[2]')
-    H1_AUTH_PAGE = ((By.XPATH, '(//h1)[1]'))
+    H1_AUTH_PAGE = (By.XPATH, '(//h1)[1]')
 
     @allure.step("Ввод текста в поля и нажатие кнопки авторизоваться")
     def login(self, email, password):
