@@ -98,7 +98,7 @@ def app(request):
     return fixture
 
 
-@pytest.fixture(scope="module", autouse=True)
+@pytest.fixture(scope='module', autouse=True)
 def stop(request):
     def fin():
         fixture.destroy()

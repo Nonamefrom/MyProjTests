@@ -12,3 +12,4 @@ class TestLoginControlPanel:
         got_error = ref.cp_auth_form.error_message()
         assert ER.ERROR_TEXT == got_error, f"Expected '{ER.ERROR_TEXT}' but got '{got_error}'"
 
+

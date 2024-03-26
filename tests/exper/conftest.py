@@ -60,8 +60,10 @@ def pytest_generate_tests(metafunc):
 
 
 # работа с файлами .py в папке data
+# аналог 'from data.{имя файла}.py import testdata' для каждого файла с тестами
 def load_from_module(module):
     return importlib.import_module("data.%s" % module).testdata
+# аналог from data.cp_user_wrong_pass.py import testdata
 
 
 # работа с json
