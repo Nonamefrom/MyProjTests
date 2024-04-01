@@ -30,6 +30,8 @@ class GenerateData:
 
 
 class ExpectedResults:
+    CONTROL_PANEL_HEADER = 'Панель управления'
+    CONTROL_PANEL_PROFILE = 'Профиль'
     SERVICE_BOOKING_H1 = 'Онлайн запись на шиномонтаж'
     CONTROL_PANEL_H1 = 'Управление опциями'
     PWZ_H1 = 'Список заказов'

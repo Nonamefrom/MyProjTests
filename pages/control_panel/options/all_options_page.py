@@ -4,6 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from pages.base_page import BasePage
 
+
 class AllOptionsCpPage(BasePage):
     FILTER_DRDWN = (By.XPATH, '//div[@class="options-filters__filter mb-6 mr-4"]//div[@class="sa-select__simple-text"]')
     ANY_STATUS = (By.XPATH, '//span[contains(text(),"Любой статус")]')
@@ -16,6 +17,7 @@ class AllOptionsCpPage(BasePage):
     DATE_END_ASC = (By.XPATH, '//span[contains(text(),"Дата окончания (от новых к старым)")]')
     ADD_NEW_OPTION = (By.XPATH, '//button[@type="button"]')
     H1_TEXT = (By.XPATH, '//span[@class="text-h1"]')
+    BACK_ARROW = (By.XPATH, '//*[@class="option-page--back"]')  # кнопка "< Все опции" в каждой опции
 
     @allure.step("Получение текста заголовка Н1")
     def cp_h1_text(self):
@@ -24,40 +26,44 @@ class AllOptionsCpPage(BasePage):
         return phrase
 
     @allure.step("Включить фильтр Любой статус опции")
-    def click_filter_anystatus(self):
+    def click_filter_any_status(self):
         self.click(self.FILTER_DRDWN)
         self.click(self.ANY_STATUS)
 
     @allure.step("Включить фильтр Активные опции")
-    def click_filter_actualstatus(self):
+    def click_filter_actual_status(self):
         self.click(self.FILTER_DRDWN)
         self.click(self.ACTUAL_STATUS)
 
     @allure.step("Включить фильтр Завершенные опции")
-    def click_filter_endedstatus(self):
+    def click_filter_ended_status(self):
         self.click(self.FILTER_DRDWN)
         self.click(self.ENDED_STATUS)
 
     @allure.step("Включить по дате старта сорт. от старых к новым опциям")
-    def click_sort_startdate_desc(self):
+    def click_sort_start_date_desc(self):
         self.click(self.SORT_DRDWN)
         self.click(self.DATE_START_DESC)
 
     @allure.step("Включить по дате старта сорт. от новых к старым опциям")
-    def click_sort_startdate_asc(self):
+    def click_sort_start_date_asc(self):
         self.click(self.SORT_DRDWN)
         self.click(self.DATE_START_ASC)
 
     @allure.step("Включить по дате окончания сорт. от старых к новым опциям")
-    def click_sort_enddate_desc(self):
+    def click_sort_end_date_desc(self):
         self.click(self.SORT_DRDWN)
         self.click(self.DATE_END_DESC)
 
     @allure.step("Включить по дате окончания сорт. от новых к старым опциям")
-    def click_sort_enddate_asc(self):
+    def click_sort_end_date_asc(self):
         self.click(self.SORT_DRDWN)
         self.click(self.DATE_END_ASC)
 
     @allure.step("Создать/Добавить новую опцию")
     def click_add_new_option(self):
         self.click(self.ADD_NEW_OPTION)
+
+    @allure.step("Выйти из опции")
+    def exit_from_option(self):
+        self.click(self.BACK_ARROW)

@@ -32,8 +32,8 @@ class AddNewOptionCpPage(BasePage):
     ERROR_NOTIF_CLIENT = (By.XPATH, '(//div[contains(text(),"Заполните текст уведомления")])')
     NOTIF_LIFETIME = (By.XPATH, '//input[@placeholder="000:00:00"]')
     MANAGER_MAILS = (By.XPATH, '(//input[@type="text"])[5]')
-    MANAGER_ERROR = (By.XPATH,
-                     '//div[@class="option-form__notification-emails"]//div[@class="sa-input__messages-wrapper"]//div[1])')
+    MANAGER_ERROR = (
+        By.XPATH, '//div[@class="option-form__notification-emails"]//div[@class="sa-input__messages-wrapper"]//div[1])')
 
     @allure.step("Вернутся на экран Опций")
     def go_to_all_option(self):
@@ -87,6 +87,7 @@ class AddNewOptionCpPage(BasePage):
     def set_fts_landsail_type(self):
         self.click(self.DRDWN_OPTION_TYPE)
         self.click(self.SET_FTS_LANDSAIL_SERVICE)
+
     @allure.step("Выключение автолимита гарантии")
     def disable_autolimit_warranty(self):
         self.click(self.CHCKBX_AUTOLIMIT_DISABLE)
@@ -105,7 +106,7 @@ class AddNewOptionCpPage(BasePage):
         self.fill_text(self.SET_ENDDATE_OPTION, text)
 
     @allure.step("Ввод текста опции")
-    def input_maintext_option(self, text):
+    def input_main_text_option(self, text):
         self.fill_text(self.INPUT_MAINTEXT_OPTION, text)
 
     @allure.step("Включение Сообщения пользователям")
@@ -120,11 +121,12 @@ class AddNewOptionCpPage(BasePage):
     def input_massage_users(self, text):
         self.fill_text(self.NOTIF_FOR_CLIENT, text)
 
-#Требует отладки
+    # Требует отладки
     @allure.step("Установка времени отображения Сообщения пользователям")
-    def set_viewtime_massage_users(self, text):
+    def set_view_time_massage_users(self, text):
         try:
-            element: WebElement = wait(self.driver, timeout=5).until(EC.visibility_of_element_located(self.NOTIF_LIFETIME))
+            element: WebElement = (wait(self.driver, timeout=5).
+                                   until(EC.visibility_of_element_located(self.NOTIF_LIFETIME)))
             element.click()
             for digit in text:
                 element.send_keys(digit)
@@ -136,7 +138,7 @@ class AddNewOptionCpPage(BasePage):
     def set_managers_mail(self, text):
         self.fill_text(self.MANAGER_MAILS, text)
 
-    @allure.step("Получение текста при пустующем поле Сообщения клиентов")
+    @allure.step("Получение текста при пустом поле Текст уведомления")
     def error_empty_massage_clients(self):
         phrase = wait(self.driver, timeout=5).until(EC.visibility_of_element_located(self.ERROR_NOTIF_CLIENT)).text
         return phrase
