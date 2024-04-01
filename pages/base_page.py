@@ -17,6 +17,8 @@ class BasePage:
     def element_is_visible(self, locator):
         return self.wait.until(EC.visibility_of_element_located(locator))
 
+    def elements_are_visible(self, locator):
+        return self.wait.until(EC.visibility_of_all_elements_located(locator))
     # def __init__(self, driver, url=None):
     #     self.driver = driver
     #     self.url = url
@@ -27,9 +29,9 @@ class BasePage:
     #
     # def element_is_visible(self, locator, timeout=5):
     #     return wait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
-
-    def elements_are_visible(self, locator, timeout=5):
-        return wait(self.driver, timeout).until(EC.visibility_of_all_elements_located(locator))
+    #
+    # def elements_are_visible(self, locator, timeout=5):
+    #     return wait(self.driver, timeout).until(EC.visibility_of_all_elements_located(locator))
 
     def element_is_present(self, locator, timeout=5):
         return wait(self.driver, timeout).until(EC.presence_of_element_located(locator))
@@ -56,3 +58,4 @@ class BasePage:
         element = wait(self.driver, 2).until(EC.presence_of_element_located(locator))
         self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
         time.sleep(1)
+
