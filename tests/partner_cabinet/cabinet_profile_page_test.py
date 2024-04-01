@@ -32,8 +32,8 @@ class TestProfileCabinet:
         check_ans = pages.profile_page.get_error_mail()
         assert check_ans == MAIL_VALIDATION, f"Expected '{MAIL_VALIDATION}' but got '{check_ans}'"
         pages.cabinet_top_bar.open_profile_dropdown().click_deauth_button()
-        H1 = pages.cabinet_landing_page.partner_landing_h1_text()
-        assert H1_LANDING == H1, f"Expected '{H1_LANDING}' but got '{H1}'"
+        logo = pages.cabinet_landing_page.check_logo_partner_landing()
+        assert True == logo, f"Expected Logo on page but got '{logo}'"
 
     @allure.title("Тест смены региона, его отображение в топбаре, и странице профиля")
     @pytest.mark.parametrize("region", ["Москва","Мурманская область","Тульская область"])
