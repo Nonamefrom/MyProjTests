@@ -5,7 +5,7 @@ from data.test_data import ExpectedResults as ER
 
 @allure.suite("Тесты ПУ")
 @allure.sub_suite("Проверка разделения прав Админа и СуперАдмина")
-class TestAdminRigths:
+class TestAdminRights:
     @allure.title("Проверка отсутствия возможности нажать кнопку Синхронизации с Парусом в ПУ у Админа")
     def test_admin_sync_button_is_disabled(self, cp, data_cp_admin):
         username, password = data_cp_admin[1], data_cp_admin[2]
@@ -14,7 +14,7 @@ class TestAdminRigths:
         cp.admin.admin_tab()
         # assert cp.admin.sync_button_status() is not True
         assert cp.admin.sync_button_class() is not True
-        cp.top_bar.click_open_profile_dropdown().click_deauth_button()
+        cp.top_bar_cp.click_open_profile_dropdown().click_deauth_button()
 
     @allure.title("Проверка возможности нажать кнопку Синхронизации с Парусом в ПУ у СуперАдмина")
     def test_super_admin_sync_button_is_active(self, cp, data_cp_superadmin):
@@ -24,7 +24,7 @@ class TestAdminRigths:
         cp.admin.admin_tab()
         # assert cp.admin.sync_button_status() is True
         assert cp.admin.sync_button_class() is True
-        cp.top_bar.click_open_profile_dropdown().click_deauth_button()
+        cp.top_bar_cp.click_open_profile_dropdown().click_deauth_button()
 
     # @allure.title("Проверка наличия вкладки связывания БШМ с РГ в ПУ у СуперАдмина")
     # def test_super_admin_sync_button_is_active(self, cp, data_cp_superadmin):

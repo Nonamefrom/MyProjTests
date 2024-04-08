@@ -13,7 +13,8 @@ class AdminTab(BasePage):
     TAB_ACTIVE = "sa-tab--route-active sa-tab--exact-route-active sa-tab sa-tab--active"
     TAB_NOT_ACTIVE = "sa-tab"
     # Вкладка 4: Администрирование
-    ADMIN_TAB = (By.XPATH, '//*[@data-qa="option-tab-4"]')
+    ADMIN_TAB_ID = (By.XPATH, '//*[@data-qa="option-tab-4"]')
+    ADMIN_TAB_NAME = 'Администрирование'
     ADMIN_TAB_NOT_ACTIVE = (By.XPATH, '//*[@class="sa-tab"][@data-qa="option-tab-4"]')
     ADMIN_TAB_ACTIVE = (
         By.XPATH, '//*[@class="sa-tab--route-active sa-tab--exact-route-active sa-tab sa-tab--active"]'
@@ -53,7 +54,7 @@ class AdminTab(BasePage):
             raise ValueError(value)  # Что бы увидеть что нам вернулось значение, которое не прошло по условиям
 
     def admin_tab(self):
-        self.click(self.ADMIN_TAB)
+        self.click(self.ADMIN_TAB_ID)
 
     def sync_button_status(self):
         # работа под вопросом

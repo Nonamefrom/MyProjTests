@@ -41,9 +41,7 @@ ps: ## Выводит список контейнеров и их статусы
 	@$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) ps
 
 test: ## Запускает тесты с генерацией отчетов
-	@pytest ./tests --alluredir="./allure-results"
-
-
+	@pytest ./tests/ --alluredir="./allure-results"
 
 lint: ## Запуск pylint для линтинга
 	@pylint "./**/*.py"

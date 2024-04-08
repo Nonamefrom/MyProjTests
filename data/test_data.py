@@ -26,7 +26,8 @@ class GenerateData:
     PHONE = f'9{nine_digit_number}'
     NAME = f"ИмяТест{test_time}"
     LAST_NAME = f"ФамилияТест{test_time}"
-    MAIL = f'test{test_time}@mail.ru'
+    TIME_MAIL = f'test{test_time}@mail.ru'
+    RANDOM_MAIL = f'test{nine_digit_number}@mail.ru'
 
 
 class ExpectedResults:
@@ -42,4 +43,3 @@ class ExpectedResults:
     PASS_ARE_DIFF = 'Пароли не совпадают.'
     MAIL_VALIDATION_PROFILE_CAB = 'Поле электронный адрес должно быть действительным электронным адресом.'
 
-#

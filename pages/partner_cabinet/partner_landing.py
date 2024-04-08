@@ -7,15 +7,24 @@ from pages.base_page import BasePage
 
 
 class PartnerLandingPage(BasePage):
-    FAKE_AUTH = (By.XPATH, '(//a[@type="button"])[6]')
     H1_TEXT = (By.XPATH, '//span[@class="yellow"]')
-    FAKE_LOGIN_BUTTON = (By.XPATH, '// button[ @ type = "submit"]')
+    FAKE_AUTH = (By.XPATH, '//div[@class="row dev-login"]//*[@type="button"]')
+    LOGO = (By.XPATH, '//*[@data-qa="index-page"]')
+    FAKE_LOGIN_BUTTON = (By.XPATH, '//button[@type="submit"]')
 
     @allure.step("Получение текста заголовка Н1")
     def partner_landing_h1_text(self):
         wait = WebDriverWait(self.driver, 10)
         phrase = wait.until(EC.visibility_of_element_located(self.H1_TEXT)).text
         return phrase
+
+    @allure.step("Проверка присутствия ЛОГО 'Точка движения'")
+    def check_logo_partner_landing(self):
+        try:
+            self.element_is_visible(self.LOGO)
+            return True
+        except TimeoutException:
+            return False
 
     @allure.step("Переход в MIMFaker")
     def login_partner_throw_faker(self):
@@ -31,10 +40,10 @@ class PartnerLandingPage(BasePage):
         except TimeoutException:
             return False
 
-#Метод авторизации независимо от окружения
+    # Метод авторизации независимо от окружения
     def login_all_env(self, pages):
         check = pages.cabinet_landing_page.check_mimfaker_button()
         if check is True:
-            pages.cabinet_landing_page.login_partner_throw_faker()#через фейкер, если есть клавиша
+            pages.cabinet_landing_page.login_partner_throw_faker()  # через фейкер, если есть клавиша
         else:
-            pages.mim_page.login_throw_mim(pages)#через мим, если нет клавиши
+            pages.mim_page.login_throw_mim(pages)  # через мим, если нет клавиши
