@@ -4,6 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from pages.base_page import BasePage
 
+
 class AllNewsPage(BasePage):
     H1_TEXT = (By.XPATH, '//div[@class="col text-h1-bold"]')
     ADD_NEW = (By.XPATH, '//span[contains(text(),"Добавить")]')

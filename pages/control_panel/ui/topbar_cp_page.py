@@ -1,23 +1,36 @@
+import time
+
 import allure
 from selenium.webdriver.common.by import By
 from pages.base_page import BasePage
 
 
 class TopBarCpPage(BasePage):
-    LINK_TO_MAIN_PAGE = (By.XPATH, '//span[@class="base-header__title web text-h3"]')
-    OPEN_PROFILE_DROPDOWN = (By.XPATH, '(//*[name()="path"][@fill-rule="evenodd"])[1]')
-    LINK_TO_PROFILE_PAGE = (By.XPATH, '//div[@class="menu__item-text text-h4-bold mr-3"]')
-    DEAUTH_BUTTON = (By.XPATH, '(//*[name()="svg"][@class="sa-icon sa-icon--name--Exit"])[1]')
+    LINK_TO_MAIN_PAGE = (By.XPATH, '//*[@data-qa="index-page-link"]')
+    OPEN_PROFILE_DROPDOWN = (By.XPATH, '//*[@data-qa="toggle-profile-menu"]')
+    OPEN_PROFILE_DROPDOWN_PWZ = (By.XPATH, '//*[@class="base-header-profile__content"]')
+    LINK_TO_PROFILE_PAGE = (By.XPATH, '//*[@data-qa="profile-link"]')
+    DEAUTH_BUTTON = (By.XPATH, '//*[@data-qa="logout-btn"]')
+    DEAUTH_BUTTON_PWZ = (By.XPATH, '//*[@class="sa-icon sa-icon--name--Exit"]')
 
     @allure.step("Открытие дропдауна профиль в ПУ")
     def click_open_profile_dropdown(self):
-        self.click(self.OPEN_PROFILE_DROPDOWN)
-        return self
+        if (self.link_end_with('/orders') is True) or (self.link_end_with('/appointments') is True):
+            self.click(self.OPEN_PROFILE_DROPDOWN_PWZ)
+            return self
+        else:
+            self.click(self.OPEN_PROFILE_DROPDOWN)
+            return self
 
     @allure.step("Клик кнопки выйти - деавторизация")
     def click_deauth_button(self):
-        self.click(self.DEAUTH_BUTTON)
-        return self
+        time.sleep(0.0001)
+        if (self.link_end_with('/orders') is True) or (self.link_end_with('/appointments') is True):
+            self.click(self.DEAUTH_BUTTON_PWZ)
+            return self
+        else:
+            self.click(self.DEAUTH_BUTTON)
+            return self
 
     @allure.step("Переход на главную в ПУ")
     def click_open_mainpage_controlpanel(self):

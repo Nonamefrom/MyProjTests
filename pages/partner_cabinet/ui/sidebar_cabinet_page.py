@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from pages.base_page import BasePage
 
+
 class SideBarCabinetPage(BasePage):
     OPTIONS = (By.XPATH, '//span[contains(text(),"Витрина")]')
     NEW_OPTION = (By.XPATH, '//div[@class="new-options-counter__count sa-text-color-white"]')

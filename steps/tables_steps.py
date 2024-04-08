@@ -10,7 +10,7 @@ from utils.exceptions.not_found_exception import NotFoundException
 class TablesSteps(BasePage):
     VIEW_NEXT_PAGE = (By.XPATH, '//*[@class="sa-icon sa-icon--name--Right sa-pagination__next-icon"]')
 
-    def create_entity_text_xpath(self, text ):
+    def create_entity_text_xpath(self, text):
         locator = f'//span[contains(text(),"{text}")]'
         return locator
 

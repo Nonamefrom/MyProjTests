@@ -31,8 +31,11 @@ class GenerateData:
 
 
 class ExpectedResults:
+    CONTROL_PANEL_HEADER = 'Панель управления'
+    CONTROL_PANEL_PROFILE = 'Профиль'
     SERVICE_BOOKING_H1 = 'Онлайн запись на шиномонтаж'
     CONTROL_PANEL_H1 = 'Управление опциями'
+    CP_INTERNAL_PAGE_H1 = 'Пользователи'
     PWZ_H1 = 'Список заказов'
     EMP_DASH_H1 = 'Доступные сервисы'
     H1_LANDING_CABINET = 'Точка движения'
@@ -41,4 +44,3 @@ class ExpectedResults:
     PASS_ARE_DIFF = 'Пароли не совпадают.'
     MAIL_VALIDATION_PROFILE_CAB = 'Поле электронный адрес должно быть действительным электронным адресом.'
 
-#

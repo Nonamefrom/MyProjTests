@@ -1,0 +1,71 @@
+import time
+import allure
+from data.test_data import ExpectedResults as ER
+from data.test_data import RegData
+
+
+EMAIL = RegData.EMAIL
+INTERNAL_MAIL = RegData.INTERNAL_MAIL
+INTERNAL_PASS = RegData.INTERNAL_PASS
+B2B_MAIL = RegData.B2B_MAIL
+B2B_PASS = RegData.B2B_PASS
+WRONG_MAIL = RegData.WRONG_MAIL
+WRONG_USER_PASS = RegData.WRONG_USER_PASS
+USER_PASS = RegData.USER_PASS
+
+
+@allure.suite("Тесты авторизации")
+@allure.sub_suite("Набор тестов авторизации Пункта выдачи заказов")
+class TestLoginPWZ:
+    @allure.title("Запрет авторизации существ. пользователя с неправильным паролем ПВЗ")
+    def test_pwz_login_wrong_pass(self, kc):
+        kc.auth_pwz_form.open().go_to_login("internal").login(EMAIL, WRONG_USER_PASS)
+        got_error = kc.auth_pwz_form.error_message()
+        assert ER.ERROR_TEXT == got_error, f"Expected '{ER.ERROR_TEXT}' but got '{got_error}'"
+
+    @allure.title("Запрет авторизации НЕ существ. b2b пользователя с правильным паролем ПВЗ")
+    def test_pwz_login_b2b_wrong_mail(self, kc):
+        kc.auth_pwz_form.open().go_to_login("b2b").login(WRONG_MAIL, USER_PASS)
+        got_error = kc.auth_pwz_form.error_message()
+        assert ER.ERROR_TEXT == got_error, f"Expected '{ER.ERROR_TEXT}' but got '{got_error}'"
+
+    @allure.title("Запрет авторизации b2b в internal realm ПВЗ")
+    def test_pwz_login_b2b_like_internal(self, kc):
+        kc.auth_pwz_form.open().go_to_login("internal").login(B2B_MAIL, B2B_PASS)
+        got_error = kc.auth_pwz_form.error_message()
+        assert ER.ERROR_TEXT == got_error, f"Expected '{ER.ERROR_TEXT}' but got '{got_error}'"
+
+    @allure.title("Авторизация корректного b2b пользователя ПВЗ")
+    def test_pwz_login_correct_b2b_user(self, kc):
+        kc.auth_pwz_form.open().go_to_login("b2b").login(B2B_MAIL, B2B_PASS)
+        got_pwz_h1 = kc.pwz_main.pwz_h1_text()
+        assert ER.PWZ_H1 == got_pwz_h1, f"Expected '{ER.PWZ_H1}' but got '{got_pwz_h1}'"
+        kc.top_bar_cp.click_open_profile_dropdown().click_deauth_button()
+        time.sleep(1)
+        assert kc.auth_pwz_form.check_b2b_internal_buttons() is True, "Кнопки b2b/internal авторизации не найдены"
+
+    @allure.title("Авторизация корректного internal пользователя ПВЗ")
+    def test_pwz_login_correct_internal_user(self, kc):
+        kc.auth_pwz_form.open().go_to_login("internal").login(INTERNAL_MAIL, INTERNAL_PASS)
+        got_pwz_h1 = kc.pwz_main.pwz_h1_text()
+        assert ER.PWZ_H1 == got_pwz_h1, f"Expected '{ER.PWZ_H1}' but got '{got_pwz_h1}'"
+        kc.top_bar_cp.click_open_profile_dropdown().click_deauth_button()
+        time.sleep(1)
+        assert kc.auth_pwz_form.check_b2b_internal_buttons() is True, "Кнопки b2b/internal авторизации не найдены"
+
+    @allure.title("Восстановление почты пользователя + Кейс несовпадения вводимых новых паролей ПВЗ")
+    def test_recovery_mail_pwz(self, kc):
+        kc.auth_pwz_form.open().go_to_login("internal").click_forgot_pass()
+        kc.auth_pwz_form.input_recovery_mail(INTERNAL_MAIL)
+        kc.driver.execute_script("window.open('', '_blank');")
+        # Переключение контекста на вторую вкладку
+        kc.driver.switch_to.window(kc.driver.window_handles[1])
+        kc.mailpit_page.open().find_by_client(INTERNAL_MAIL).click_restore_url(kc.driver)
+        # Переключение контекста на третью вкладку
+        kc.driver.switch_to.window(kc.driver.window_handles[2])
+        kc.auth_pwz_form.input_different_pass(INTERNAL_PASS, WRONG_USER_PASS)
+        # Проверка несовпадения паролей
+        assert ER.PASS_ARE_DIFF == kc.auth_pwz_form.error_pass_are_diff(), "Wrong error-text or not found"
+        kc.auth_pwz_form.accept_pass_for_restore(INTERNAL_PASS)
+        got_pwz_h1 = kc.pwz_main.pwz_h1_text()
+        assert ER.PWZ_H1 == got_pwz_h1, f"Expected '{ER.PWZ_H1}' but got '{got_pwz_h1}'"

@@ -42,4 +42,3 @@ class MimAuthPage(BasePage):
         wait = WebDriverWait(self.driver, 10)
         phrase = wait.until(EC.visibility_of_element_located(self.H1_MIM_PAGE)).text
         return phrase
-# Стартовый набор локаторов и методов, необходимых для проведения авторизации, в дальнейшем возможно будет расширено

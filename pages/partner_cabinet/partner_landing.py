@@ -9,6 +9,7 @@ from pages.base_page import BasePage
 class PartnerLandingPage(BasePage):
     FAKE_AUTH = (By.XPATH, '//div[@class="row dev-login"]//*[@type="button"]')
     LOGO = (By.XPATH, '//*[@data-qa="index-page"]')
+    H1_TEXT = (By.XPATH, '//span[@class="yellow"]')
     FAKE_LOGIN_BUTTON = (By.XPATH, '// button[ @ type = "submit"]')
 
     @allure.step("Проверка присутствия ЛОГО 'Точка движения'")

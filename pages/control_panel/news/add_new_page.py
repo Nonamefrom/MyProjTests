@@ -17,7 +17,6 @@ class AddNewPage(BasePage):
     SAVE_BUTTON = (By.XPATH, '(//span)[31]')
     PUBLICATE_BUTTON = (By.XPATH, '(//button[@type="button"])[20]')
 
-
     @allure.step("Вставить дату публикации")
     def input_publication_date(self, date):
         self.fill_text(self.PUBLICATION_DATE, date)

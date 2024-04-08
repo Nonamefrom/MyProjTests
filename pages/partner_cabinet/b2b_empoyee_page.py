@@ -41,7 +41,6 @@ class B2bEmployeePageCab(BasePage):
     SAVE_CHANGES = (By.XPATH, '//*[@data-qa="save-btn"]')
     ACCEPT_DELETE = (By.XPATH, '//*[@data-qa="delete-btn"]')
 
-
     @allure.step("Заголовок Н1 страницы сотрудников")
     def get_h1_b2b_emp_page(self):
         phrase = wait(self.driver, 3).until(EC.visibility_of_element_located(self.H1_EMPLOYEE)).text
