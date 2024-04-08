@@ -7,15 +7,18 @@ from pages.base_page import BasePage
 
 
 class PartnerLandingPage(BasePage):
-    FAKE_AUTH = (By.XPATH, '(//a[@type="button"])[6]')
+    FAKE_AUTH = (By.XPATH, '//div[@class="row dev-login"]//*[@type="button"]')
+    LOGO = (By.XPATH, '//*[@data-qa="index-page"]')
     H1_TEXT = (By.XPATH, '//span[@class="yellow"]')
     FAKE_LOGIN_BUTTON = (By.XPATH, '// button[ @ type = "submit"]')
 
-    @allure.step("Получение текста заголовка Н1")
-    def partner_landing_h1_text(self):
-        wait = WebDriverWait(self.driver, 10)
-        phrase = wait.until(EC.visibility_of_element_located(self.H1_TEXT)).text
-        return phrase
+    @allure.step("Проверка присутствия ЛОГО 'Точка движения'")
+    def check_logo_partner_landing(self):
+        try:
+            self.element_is_visible(self.LOGO)
+            return True
+        except TimeoutException:
+            return False
 
     @allure.step("Переход в MIMFaker")
     def login_partner_throw_faker(self):

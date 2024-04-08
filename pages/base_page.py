@@ -5,6 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class BasePage:
 
+    # Examples
     # def __init__(self, driver, url=None):
     #     self.driver = driver
     #     self.url = url
@@ -17,8 +18,6 @@ class BasePage:
     # def element_is_visible(self, locator):
     #     return self.wait.until(EC.visibility_of_element_located(locator))
     #
-    # def elements_are_visible(self, locator):
-    #     return self.wait.until(EC.visibility_of_all_elements_located(locator))
     def __init__(self, driver, url=None):
         self.driver = driver
         self.url = url
