@@ -34,9 +34,22 @@ MIM_URL = f"{Env().mim_url}"
 CABINET_URL = f"{Env().partner_url}/"
 
 
+fixture = None
+
+
 @pytest.fixture
 def cp(app):
+    global fixture
     fixture = Application(app)
+    return fixture
+
+
+@pytest.fixture(scope='function', autouse=True)
+def stop(request):
+    def fin():
+        # print(fixture)
+        fixture.driver.quit()
+    request.addfinalizer(fin)
     return fixture
 
 

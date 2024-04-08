@@ -8,19 +8,33 @@ from pages.base_page import BasePage
 class TopBarCabinetPage(BasePage):
     LINK_TO_MAIN_PAGE = (By.XPATH, '//a[@class="base-header__titles nuxt-link-active"]')
     REGION = (By.XPATH, '//a[@href="/profile/me"]//span')
-    PHONE_COMPANY = (By.XPATH, '//span[normalize-space()="8(800)100-77-00"]')
-    OPEN_PROFILE_DROPDOWN = (By.XPATH, '//span[contains(text(),"Профиль")]')
-    LINK_TO_PROFILE_PAGE = (By.XPATH, '//div[contains(text(),"Мои данные")]')
-    DEAUTH_BUTTON = (By.XPATH, '//div[contains(text(),"Выход из приложения")]')
+    PHONE_COMPANY = (By.XPATH, '//*[normalize-space()="8(800)100-77-00"]')
+    OPEN_PROFILE_DROPDOWN = (By.XPATH, '//*[contains(text()," Профиль ")]')
+    OPEN_PROFILE_DROPDOWN_QA = (By.XPATH, '//*[@data-qa="open-profile-menu"]')
+    OPEN_PROFILE_DROPDOWN_EMP = (By.XPATH, '//*[@class="base-header-profile"]')
+    LINK_TO_PROFILE_PAGE = (By.XPATH, '//*[contains(text(),"Мои данные")]')
+    DEAUTH_BUTTON = (By.XPATH, '//*[contains(text(),"Выход из приложения")]')
+    DEAUTH_BUTTON_QA = (By.XPATH, '//*[@data-qa="logout"]')
+    DEAUTH_BUTTON_EMP = (By.XPATH, '//*[@class="sa-icon sa-icon--name--Exit"]')
 
     @allure.step("Открытие дропдауна профиль в КУ")
     def open_profile_dropdown(self):
-        self.click(self.OPEN_PROFILE_DROPDOWN)
+        self.click(self.OPEN_PROFILE_DROPDOWN_QA)
+        return self
+
+    @allure.step("Открытие дропдауна в Дашборде сотрудника")
+    def open_profile_dropdown_emp(self):
+        self.click(self.OPEN_PROFILE_DROPDOWN_EMP)
         return self
 
     @allure.step("Клик кнопки выйти - деавторизация")
     def click_deauth_button(self):
-        self.click(self.DEAUTH_BUTTON)
+        self.click(self.DEAUTH_BUTTON_QA)
+        return self
+
+    @allure.step("Клик кнопки выйти - деавторизация")
+    def click_deauth_button_emp(self):
+        self.click(self.DEAUTH_BUTTON_EMP)
         return self
 
     @allure.step("Переход на главную в КУ")

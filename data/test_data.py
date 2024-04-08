@@ -43,4 +43,3 @@ class ExpectedResults:
     PASS_ARE_DIFF = 'Пароли не совпадают.'
     MAIL_VALIDATION_PROFILE_CAB = 'Поле электронный адрес должно быть действительным электронным адресом.'
 
-#
