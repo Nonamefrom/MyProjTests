@@ -22,7 +22,6 @@ class InternalUserPage(BasePage):
     ERROR_MAIL = (By.XPATH, '//*[@data-qa="email-input"]//*[@class="sa-input__message"]')
     DELETE_USER = (By.XPATH, '//*[@data-qa="delete-user-btn"]')
 
-
     @allure.step("Заголовок Н1 страницы internal")
     def get_h1_internal_user_page(self):
         phrase = wait(self.driver, 3).until(EC.visibility_of_element_located(self.H1_INTERNAL)).text
@@ -35,6 +34,7 @@ class InternalUserPage(BasePage):
                 return True
         except:
             return False
+
     @allure.step("Вызов модалки добавления internal")
     def call_modal_menu(self):
         self.click(self.CALL_MODAL_MENU)
@@ -64,7 +64,6 @@ class InternalUserPage(BasePage):
     def set_sb_access(self):
         self.click(self.SET_SB_ACCESS)
         return self
-
 
     @allure.step("Клик 'Добавить/Сохранить/Удалить сотрудника'")
     def save_internal(self):

@@ -34,10 +34,11 @@ class PartnerLandingPage(BasePage):
         except TimeoutException:
             return False
 
-#Метод авторизации независимо от окружения
+    # Метод авторизации независимо от окружения
     def login_all_env(self, pages):
+        """Сюда надо передать фикстуру для работы"""
         check = pages.cabinet_landing_page.check_mimfaker_button()
         if check is True:
-            pages.cabinet_landing_page.login_partner_throw_faker()#через фейкер, если есть клавиша
+            pages.cabinet_landing_page.login_partner_throw_faker()  # через фейкер, если есть клавиша
         else:
-            pages.mim_page.login_throw_mim(pages)#через мим, если нет клавиши
+            pages.mim_page.login_throw_mim(pages)  # через мим, если нет клавиши

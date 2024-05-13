@@ -61,3 +61,15 @@ class BasePage:
     def link_end_with(self, link_end):
         return self.driver.current_url.endswith(link_end)
 
+    def get_text(self, elem, timeout=1):
+        text = wait(self.driver, timeout).until(EC.visibility_of_element_located(elem)).text
+        return text
+
+    def get_cell_count(self, table_loc, timeout=5):
+        try:
+            return len(wait(self.driver, timeout).until(EC.visibility_of_all_elements_located(table_loc)))
+        except:
+            return 0
+
+    # def elements_value_is_present(self, locator, attribute, value, timeout=5):
+    #     return wait(self.driver, timeout).until(EC.text_to_be_present_in_element_attribute(locator, attribute, value))

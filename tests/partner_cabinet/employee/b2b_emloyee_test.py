@@ -116,3 +116,17 @@ class TestB2BEmployees:
         mail_text = emp.b2b_employee_page.error_mail_massage()
         assert ER.MAIL_VALIDATION_PROFILE_CAB == mail_text, (f"Ожидалось {ER.MAIL_VALIDATION_PROFILE_CAB},"
                                                              f" но найдено {mail_text}")
+
+    @allure.title("Уборка тестовых юзеров после тестов")
+    def test_delete_all_test_users(self, emp):
+        emp.cabinet_landing_page.open().login_all_env(emp)
+        emp.cabinet_side_bar.click_b2b_employee()
+        while True:
+            emp.tables_steps.find_test_employee("ИмяТест")
+            try:
+                emp.b2b_employee_page.delete_employee().accept_delete_employee()
+                time.sleep(2)
+                emp.driver.refresh()
+            except:
+                return False
+

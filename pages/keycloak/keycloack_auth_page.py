@@ -32,6 +32,7 @@ class KeycloackAuthForm(BasePage):
         self.fill_text(self.NAME_BAR, email)
         self.fill_text(self.PASSWORD_BAR, password)
         self.click(self.SUBMIT_BUTTON)
+        # TODO Добавить проверку что перешли на страницу в ПУ, так как иногда зависает на ожидании и падает тест
 
     @allure.step("Переход на форму восстановления мейла")
     def click_forgot_pass(self):

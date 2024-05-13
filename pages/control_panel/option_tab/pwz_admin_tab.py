@@ -31,6 +31,7 @@ class AdminTab(BasePage):
     SYNC_BUTTON_ACTIVE_VALUE = "sa-button sa-button--active sa-button--size--md sa-button--theme--primary"
     SYNC_BUTTON_DISABLE_VALUE = "sa-button sa-button--disabled sa-button--size--md sa-button--theme--primary"
 
+    @allure.step("Проверка наличия кнопки 'Администрирование' в ПВЗ")
     def tab_status(self):
         time.sleep(0.5)  # Необходимая задержка для смены статуса вкладки 0.1 а 0.5 ради перестраховки
         value = (wait(self.driver, timeout=5).
@@ -43,6 +44,7 @@ class AdminTab(BasePage):
         else:
             raise ValueError(value)  # Что бы увидеть что нам вернулось значение, которое не прошло по условиям
 
+    @allure.step("Проверка кликабельности кнопки синхронизации с Парусом по классу кнопки")
     def sync_button_class(self):
         value = (wait(self.driver, timeout=5).
                  until(EC.visibility_of_element_located(self.SYNC_BUTTON)).get_attribute('class'))
@@ -53,13 +55,16 @@ class AdminTab(BasePage):
         else:
             raise ValueError(value)  # Что бы увидеть что нам вернулось значение, которое не прошло по условиям
 
+    @allure.step("Клик по вкладке 'Администрирование' в ПВЗ")
     def admin_tab(self):
         self.click(self.ADMIN_TAB_ID)
 
+    @allure.step("Проверка кликабельности кнопки синхронизации с Парусом")
     def sync_button_status(self):
         # работа под вопросом
         result = self.element_is_clickable(self.SYNC_BUTTON)
         return result, print(result)
 
+    @allure.step("Нажатие кнопки синхронизации с Парусом")
     def press_sync_button(self):
         self.click(self.SYNC_BUTTON)

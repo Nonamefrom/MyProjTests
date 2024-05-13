@@ -12,10 +12,12 @@ from pages.control_panel.ui.sidebar_cp_page import SideBarCpPage
 # импорт для тестов
 from pages.keycloak.keycloack_auth_page import KeycloackAuthForm
 from pages.control_panel.internal_user_page import InternalUserPage
+from pages.control_panel.notification import NotificationPage
 # импорт панели навигации внутри опции
 from pages.control_panel.option_tab.fts_connection import FtsConnection
 from pages.control_panel.option_tab.pwz_admin_tab import AdminTab
 from pages.control_panel.option_tab.users import UsersTab
+
 
 CP_URL = f"{Env().cp_url}/auth/login"
 
@@ -48,7 +50,7 @@ class Application:
         self.top_bar_cp = TopBarCpPage(driver)
         self.side_bar_cp = SideBarCpPage(driver)
         self.internal_page = InternalUserPage(driver)
-
+        self.notifications = NotificationPage(driver)
         self.cp_auth_form = KeycloackAuthForm(driver, url=CP_URL)
 
         self.fts = FtsConnection(driver)
