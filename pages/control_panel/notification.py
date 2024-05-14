@@ -354,7 +354,7 @@ class NotificationPage(BasePage):
                 assert btn_text_error == notification.bname_error, f'{btn_text_error}!={notification.bname_error}'
                 assert btn_link_error == notification.blink_error, f'{btn_link_error}!={notification.blink_error}'
             elif notification.notif_type in ('with', 'without'):
-                assert notif_type_error is False, f'{notif_type_error}!=None'
+                assert notif_type_error is False, f'{notif_type_error}!=False'
             elif notification.notif_type is False:
                 assert notif_type_error == 'empty', f'{notif_type_error}!="empty"'
             else:
@@ -507,14 +507,14 @@ class NotificationPage(BasePage):
     def find_send_button_by_header_and_status(self, status, header):
         """Поиск кнопки Отправить уведомление по статусу уведомления и его заголовку"""
         # '//tbody[@class="sa-table-content"]//tr[1]//td[2]//span'   строка
-        # '//tbody[@class="sa-table-content"]//tr[{i}]//td[5]//div' статус
+        # '//tbody[@class="sa-table-content"]//tr[1]//td[5]//div' статус
         # '//tbody[@class="sa-table-content"]//tr[1]//td[6]//button[2]'   кнопка отправки
         if status == 'created':
             state = self.NOTIFICATION_STATUS_CREATED
         elif status == 'sent':
             state = self.NOTIFICATION_STATUS_SENT
         else:
-            raise ValueError(f'Unknown status: "{status}"')
+            raise ValueError(f'Неизвестное значение status: "{status}"')
         try:
             row = By.XPATH, '//tbody[@class="sa-table-content"]//tr'
             elements = self.elements_are_visible(row)
