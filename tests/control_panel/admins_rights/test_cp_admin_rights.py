@@ -74,8 +74,8 @@ class TestAdminRights:
 
     @allure.title('НЕвозможность отправить уведомление за user так как нет кнопки "Отправить" напротив '
                   'созданного уведомления')
-    def test_unable_to_press_send_notification_button_as_user(self, cp, data_cp_user,
-                                                              suit_notification_for_test):
+    def test_able_to_press_send_notification_button_as_user(self, cp, data_cp_user,
+                                                            suit_notification_for_test):
         username, password = data_cp_user[1], data_cp_user[2]
         cp.cp_auth_form.open().login(username, password)
         cp.side_bar_cp.click_notifications()
@@ -89,6 +89,5 @@ class TestAdminRights:
         # Проверяем наличие кнопки "Отправить" уведомление после его создания
         time.sleep(7)  # Костыль для того что бы исчез предыдущий нотификейшн в снекбаре. 5 секунд + анимация + запас
         # Так как номер уведомлений идут по убыванию то новое будет первым сверху(или просто на первой странице)
-        assert cp.notifications.find_send_button_by_header_and_status('created', header) is False, \
-            'Уведомление с такими параметрами не найдено'
-        assert cp.notifications.get_snack_result() is False, 'Кнопка отправки найдена, хотя не должна была найтись'
+        cp.notifications.find_send_button_by_header_and_status('created', header)
+        assert cp.notifications.get_snack_result() == 'sent', 'Созданное уведомление не найдено'
