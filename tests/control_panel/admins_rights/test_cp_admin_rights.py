@@ -72,8 +72,7 @@ class TestAdminRights:
         cp.notifications.find_send_button_by_header_and_status('created', header)
         assert cp.notifications.get_snack_result() == 'sent', 'Созданное уведомление не найдено'
 
-    @allure.title('НЕвозможность отправить уведомление за user так как нет кнопки "Отправить" напротив '
-                  'созданного уведомления')
+    @allure.title('Возможность отправить уведомление за user')
     def test_able_to_press_send_notification_button_as_user(self, cp, data_cp_user,
                                                             suit_notification_for_test):
         username, password = data_cp_user[1], data_cp_user[2]
