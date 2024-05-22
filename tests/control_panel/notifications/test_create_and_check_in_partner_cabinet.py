@@ -2,6 +2,11 @@ import random
 import time
 import allure
 from model.notification import Notification
+import datetime
+import copy
+
+now = datetime.datetime.now()
+test_time = str(now)[:-7]
 
 
 @allure.suite('Тесты ПУ')
@@ -12,7 +17,7 @@ class TestCpAndPcNotifications:
     def test_create_notification_for_one_partner(self, cp, data_cp_superadmin,
                                                  suit_notification_for_test, data_rn_list):
         username, password = data_cp_superadmin[1], data_cp_superadmin[2]
-        notification = suit_notification_for_test
+        notification = copy.deepcopy(suit_notification_for_test)
         # Данные лежат в кортеже, переводим в список, что бы можно было удалять из него
         rn_list = list(data_rn_list)
         # Выбираем случайный рн которому будем отправлять уведомление
@@ -23,6 +28,7 @@ class TestCpAndPcNotifications:
         notification.rn = str(rn)
         # выключаем на всякий случай чекбокс(если придёт не пустой, а нам надо пустой)
         notification.checkbox = None
+        notification.header = str(f'only for {rn}: {test_time}')
         # Заходим в ПУ и создаём уведомление
         cp.cp_auth_form.open().login(username, password)
         cp.side_bar_cp.click_notifications()
@@ -67,7 +73,7 @@ class TestCpAndPcNotifications:
     def test_create_notification_for_all_partners_except_one(self, cp, data_cp_superadmin,
                                                              suit_notification_for_test, data_rn_list):
         username, password = data_cp_superadmin[1], data_cp_superadmin[2]
-        notification = suit_notification_for_test
+        notification = copy.deepcopy(suit_notification_for_test)
         # Данные лежат в кортеже, переводим в список, что бы можно было удалять из него
         rn_list = list(data_rn_list)
         # Выбираем случайный рн которому НЕ будем отправлять уведомление
@@ -80,6 +86,7 @@ class TestCpAndPcNotifications:
         notification.rn = str(rn_string)
         # выключаем на всякий случай чекбокс(если придёт не пустой, а нам надо пустой)
         notification.checkbox = None
+        notification.header = str(f'not for {rn}: {test_time}')
         # Заходим в ПУ и создаём уведомление
         cp.cp_auth_form.open().login(username, password)
         cp.side_bar_cp.click_notifications()
@@ -125,7 +132,7 @@ class TestCpAndPcNotifications:
     def test_create_notification_for_all_partners(self, cp, data_cp_superadmin,
                                                   suit_notification_for_test, data_rn_list):
         username, password = data_cp_superadmin[1], data_cp_superadmin[2]
-        notification = suit_notification_for_test
+        notification = copy.deepcopy(suit_notification_for_test)
         # Данные лежат в кортеже, переводим в список, что бы можно было удалять из него
         rn_list = list(data_rn_list)
         # Заходим в ПУ и создаём уведомление
@@ -133,6 +140,7 @@ class TestCpAndPcNotifications:
         cp.side_bar_cp.click_notifications()
         cp.notifications.open_modal()
         # запоминаем заголовок по которому будем искать уведомление
+        notification.header = str(f'for all partners: {test_time}')
         cp.notifications.fill_notification(notification)
         cp.notifications.save()
         # Так как номер уведомлений идут по убыванию то новое будет первым сверху(или просто на первой странице)

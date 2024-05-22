@@ -1,3 +1,5 @@
+import time
+
 import allure
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -62,4 +64,6 @@ class TopBarCabinetPage(BasePage):
 
     @allure.step("Открыть уведомления")
     def open_notifications(self):
+        self.element_is_visible(self.NOTIFICATION_BUTTON)
+        time.sleep(1)
         self.click(self.NOTIFICATION_BUTTON)

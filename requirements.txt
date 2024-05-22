@@ -45,3 +45,4 @@ webdriver-manager==3.8.6
 Werkzeug==2.3.6
 wrapt==1.15.0
 wsproto==1.2.0
+pytest-rerunfailures==14.0
