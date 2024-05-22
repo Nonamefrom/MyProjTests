@@ -363,6 +363,11 @@ class NotificationPage(BasePage):
 
     @allure.step('Читаем ошибку из нотификейшена в снекбаре')
     def get_snack_result(self):
+        """incorrect - ошибка некорректного сохранения
+        created - сообщение об успешном создании
+        saved - сообщение об успешном сохранении
+        sent - сообщение об успешной отправке
+        earlier - ошибка отправки так как было отправлено ранее"""
         try:
             text = self.get_text(self.SNACKBAR_NOTIFICATION_LOC)
             if text == self.SNACK_ERROR_INCORRECT_TEXT:
@@ -505,10 +510,7 @@ class NotificationPage(BasePage):
 
     @allure.step('Поиск кнопки "Отправить уведомление" по заголовку')
     def find_send_button_by_header_and_status(self, status, header):
-        """Поиск кнопки Отправить уведомление по статусу уведомления и его заголовку"""
-        # '//tbody[@class="sa-table-content"]//tr[1]//td[2]//span'   строка
-        # '//tbody[@class="sa-table-content"]//tr[1]//td[5]//div' статус
-        # '//tbody[@class="sa-table-content"]//tr[1]//td[6]//button[2]'   кнопка отправки
+        """Поиск кнопки Отправить уведомление по статусу('created' или 'sent') уведомления и его заголовку"""
         if status == 'created':
             state = self.NOTIFICATION_STATUS_CREATED
         elif status == 'sent':

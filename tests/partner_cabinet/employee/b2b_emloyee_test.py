@@ -129,4 +129,3 @@ class TestB2BEmployees:
                 emp.driver.refresh()
             except:
                 return False
-

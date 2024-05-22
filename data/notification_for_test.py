@@ -45,7 +45,7 @@ time = str(now)[:-7]
 testdata = [
     # Просто 1 набор валидных данных для проверки связанных с уведомлением, иное чем валидация.
     # Проверяем кейс с введённым рн партнёра без чекбокса + валидные данные
-    Notification(case_name=f'CP/AdminRights/Check "Send Notification" button',
+    Notification(case_name=f'CP/AdminRights/Check "Send Notification" button/',
                  rn=None, checkbox='place',
                  level='blue',
                  notif_type='without',

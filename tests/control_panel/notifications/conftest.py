@@ -9,10 +9,14 @@ from steps.tables_steps import TablesSteps
 # всё кроме страниц
 from pages.control_panel.ui.topbar_cp_page import TopBarCpPage
 from pages.control_panel.ui.sidebar_cp_page import SideBarCpPage
+from pages.partner_cabinet.ui.topbar_cabinet_page import TopBarCabinetPage
 # импорт для тестов
 from pages.keycloak.keycloack_auth_page import KeycloackAuthForm
+from pages.partner_cabinet.mim_page import MimAuthPage
 from pages.control_panel.internal_user_page import InternalUserPage
 from pages.control_panel.notification import NotificationPage
+from pages.partner_cabinet.notification import PartnerCabinetNotifications
+from pages.partner_cabinet.partner_landing import PartnerLandingPage
 # импорт панели навигации внутри опции
 from pages.control_panel.option_tab.fts_connection import FtsConnection
 from pages.control_panel.option_tab.pwz_admin_tab import AdminTab
@@ -20,6 +24,8 @@ from pages.control_panel.option_tab.users import UsersTab
 
 
 CP_URL = f"{Env().cp_url}/auth/login"
+CABINET_URL = f"{Env().partner_url}/"
+MIM_URL = f"{Env().mim_url}"
 
 fixture = None
 
@@ -48,12 +54,11 @@ class Application:
         self.common_steps = CommonSteps(driver, url=CP_URL)
         self.tables_steps = TablesSteps(driver, url=CP_URL)
         self.top_bar_cp = TopBarCpPage(driver)
+        self.top_bar = TopBarCabinetPage(driver, url=CABINET_URL)
         self.side_bar_cp = SideBarCpPage(driver)
         self.internal_page = InternalUserPage(driver)
-        self.cp_auth_form = KeycloackAuthForm(driver, url=CP_URL)
-
         self.notifications = NotificationPage(driver)
-
-        self.fts = FtsConnection(driver)
-        self.admin = AdminTab(driver)
-        self.users = UsersTab(driver)
+        self.pc_notifications = PartnerCabinetNotifications(driver)
+        self.cp_auth_form = KeycloackAuthForm(driver, url=CP_URL)
+        self.mim_page = MimAuthPage(driver, url=MIM_URL)
+        self.cabinet_landing_page = PartnerLandingPage(driver, url=CABINET_URL)
