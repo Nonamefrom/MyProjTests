@@ -1,23 +1,11 @@
 import time
+import re
 from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
 
 
 class BasePage:
 
-    # Examples
-    # def __init__(self, driver, url=None):
-    #     self.driver = driver
-    #     self.url = url
-    #     self.wait = wait(driver, timeout=5, poll_frequency=0.1)
-    #
-    # def open(self):
-    #     self.driver.get(self.url)
-    #     return self
-    #
-    # def element_is_visible(self, locator):
-    #     return self.wait.until(EC.visibility_of_element_located(locator))
-    #
     def __init__(self, driver, url=None):
         self.driver = driver
         self.url = url
@@ -62,7 +50,12 @@ class BasePage:
         return self.driver.current_url.endswith(link_end)
 
     def get_text(self, elem, timeout=1):
+        self.element_is_present(elem)  # 5 сек ждём элемент и 1 секунда таймаут если локатор для текста не корректный
         text = wait(self.driver, timeout).until(EC.visibility_of_element_located(elem)).text
+        return text
+
+    def get_attribute_value(self, elem, attr):
+        text = self.element_is_present(elem).get_attribute(attr)
         return text
 
     def get_cell_count(self, table_loc, timeout=5):
@@ -71,5 +64,26 @@ class BasePage:
         except:
             return 0
 
-    # def elements_value_is_present(self, locator, attribute, value, timeout=5):
-    #     return wait(self.driver, timeout).until(EC.text_to_be_present_in_element_attribute(locator, attribute, value))
+    def activated(self, locator, attr) -> bool:
+        """Используется в случаях когда в аттрибуте не было active, но стало active при выборе"""
+        value = self.element_is_present(locator).get_attribute(attr)
+        # print(value)
+        res = re.split('-|__|--| ', value)
+        active = 'active'
+        for i in res:
+            if active in i:
+                return True
+        else:
+            return False
+
+    def disabled(self, locator, attr) -> bool:
+        """Используется в случаях когда в аттрибуте не было disable, но стало disabled при отключении"""
+        value = self.element_is_present(locator).get_attribute(attr)
+        # print(value)
+        res = re.split('-|__|--| ', value)
+        disabled = 'disabled'
+        for i in res:
+            if disabled in i:
+                return True
+        else:
+            return False

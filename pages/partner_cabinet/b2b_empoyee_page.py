@@ -203,3 +203,4 @@ class B2bEmployeePageCab(BasePage):
     def get_bubble_text(self):
         phrase = wait(self.driver, timeout=5).until(EC.visibility_of_element_located(self.BUBBLE_MESSAGE)).text
         return phrase
+

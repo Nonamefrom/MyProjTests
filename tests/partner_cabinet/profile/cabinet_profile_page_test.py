@@ -12,6 +12,7 @@ WRONG_MAIL = RegData.WRONG_MAIL
 class TestProfileCabinet:
 
     @allure.title("Тест валидации поля email")
+    @allure.id('Partner/Profile/№ 1')
     @pytest.mark.parametrize("email", ["abcdefghgfkjb@mail.ru", "123/.!@gmail.com"])
     def test_change_mail_in_profile(self, pc, email):
         pc.cabinet_landing_page.open().login_all_env(pc)
@@ -23,6 +24,7 @@ class TestProfileCabinet:
         assert old_mail is not new_mail, f"Expected '{old_mail}' not changes '{new_mail}'"
 
     @allure.title("Тест валидации почты + деавторизация")
+    @allure.id('KeyCloack/PartnerCab/№ 1')
     def test_wrong_mail_in_profile_and_deauth(self, pc):
         pc.cabinet_landing_page.open().login_all_env(pc)
         pc.cabinet_top_bar.open_profile_dropdown().open_profile_user_cabinet()
@@ -35,6 +37,7 @@ class TestProfileCabinet:
         assert logo is True, f"Expected Logo on page but got '{logo}'"
 
     @allure.title("Тест смены региона, его отображение в топбаре, и странице профиля")
+    @allure.id('Partner/Profile/№ 2')
     @pytest.mark.parametrize("region", ["Москва","Мурманская область","Тульская область"])
     def test_change_region_in_profile(self, pc, region):
         pc.cabinet_landing_page.open().login_all_env(pc)

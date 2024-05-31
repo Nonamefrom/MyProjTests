@@ -44,10 +44,9 @@ class AdminTab(BasePage):
         else:
             raise ValueError(value)  # Что бы увидеть что нам вернулось значение, которое не прошло по условиям
 
-    @allure.step("Проверка кликабельности кнопки синхронизации с Парусом по классу кнопки")
+    @allure.step("Проверка состояние кнопки синхронизации с Парусом по классу кнопки")
     def sync_button_class(self):
-        value = (wait(self.driver, timeout=5).
-                 until(EC.visibility_of_element_located(self.SYNC_BUTTON)).get_attribute('class'))
+        value = self.get_attribute_value(self.SYNC_BUTTON, 'class')
         if value == self.SYNC_BUTTON_DISABLE_VALUE:
             return False
         elif value == self.SYNC_BUTTON_ACTIVE_VALUE:
@@ -59,11 +58,15 @@ class AdminTab(BasePage):
     def admin_tab(self):
         self.click(self.ADMIN_TAB_ID)
 
-    @allure.step("Проверка кликабельности кнопки синхронизации с Парусом")
+    @allure.step("Проверка состояния кнопки синхронизации с Парусом")
     def sync_button_status(self):
-        # работа под вопросом
-        result = self.element_is_clickable(self.SYNC_BUTTON)
-        return result, print(result)
+        disabled = self.disabled(self.SYNC_BUTTON, 'class')
+        active = self.activated(self.SYNC_BUTTON, 'class')
+        # print(f'disabled: {disabled}\n active: {active}')
+        if (disabled is True) and (active is False):
+            return False
+        elif (disabled is False) and (active is True):
+            return True
 
     @allure.step("Нажатие кнопки синхронизации с Парусом")
     def press_sync_button(self):

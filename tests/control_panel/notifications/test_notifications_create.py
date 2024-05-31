@@ -1,167 +1,185 @@
 import time
 import allure
+import pytest
 from model.notification import Notification
 
 
 @allure.suite('Тесты ПУ')
-@allure.sub_suite('Тесты страницы Уведомления в ПУ(поля, валидация, создание, отправка)')
+@allure.sub_suite('Тесты страницы Уведомления в ПУ(поля, валидация, создание)')
 class TestCpNotifications:
-    @allure.title('Начальная проверка страницы Уведомления за superadmin')
+
+    @allure.title('Проверка открытия страницы уведомления в ПУ у Администратора')
+    @allure.id('CP/Notification/№ 1')
     def test_notification_page_as_superadmin(self, cp, data_cp_superadmin):
         username, password = data_cp_superadmin[1], data_cp_superadmin[2]
         cp.cp_auth_form.open().login(username, password)
         cp.side_bar_cp.click_notifications()
         assert cp.notifications.h1_text_check() is True
         assert cp.notifications.h3_text_check() is True
-        assert cp.notifications.add_button_presence() is True
-        assert cp.notifications.add_button_clickable() is True
-        assert cp.notifications.modal_opening_check() is True
 
-    @allure.title('Начальная проверка страницы Уведомления за user')
+    @allure.title('Проверка открытия страницы уведомления в ПУ у Пользователя')
+    @allure.id('CP/Notification/№ 2')
     def test_notification_page_as_user(self, cp, data_cp_user):
         username, password = data_cp_user[1], data_cp_user[2]
         cp.cp_auth_form.open().login(username, password)
         cp.side_bar_cp.click_notifications()
         assert cp.notifications.h1_text_check() is True
         assert cp.notifications.h3_text_check() is True
-        assert cp.notifications.add_button_presence() is True
-        assert cp.notifications.add_button_clickable() is True
+
+    @allure.title('Проверка открытия модалки у Администратора')
+    @allure.id('CP/Notification/№ 3')
+    def test_notification_superadmin_can_open_modal(self, cp, data_cp_superadmin):
+        username, password = data_cp_superadmin[1], data_cp_superadmin[2]
+        cp.cp_auth_form.open().login(username, password)
+        cp.side_bar_cp.click_notifications()
         assert cp.notifications.modal_opening_check() is True
 
-    @allure.title('Проверка имён/подсказок/валидации полей в модалке за user')
-    def test_notification_fields_validation_as_user(self, cp, data_cp_user):
+    @allure.title('Проверка открытия модалки у Пользователя')
+    @allure.id('CP/Notification/№ 4')
+    def test_notification_user_can_open_modal(self, cp, data_cp_user):
+        username, password = data_cp_user[1], data_cp_user[2]
+        cp.cp_auth_form.open().login(username, password)
+        cp.side_bar_cp.click_notifications()
+        assert cp.notifications.modal_opening_check() is True
+
+    @allure.title('Проверка отображения ошибки отсутствия РН в поле РН при отсутствующем чекбоксе')
+    @allure.id('CP/Notification/№ 5')
+    @pytest.mark.parametrize('test_data, expected', [(False, 'empty'), (True, False)])
+    def test_notification_no_checkbox_error_if_no_rn(self, cp, data_cp_user, test_data, expected):
         username, password = data_cp_user[1], data_cp_user[2]
         cp.cp_auth_form.open().login(username, password)
         cp.side_bar_cp.click_notifications()
         cp.notifications.open_modal()
-        # проверяем что чекбокса по умолчанию при открытии модалки - нет
-        assert cp.notifications.checkbox_rn_is_enable() is False, 'В Чекбоксе "Отправить всем" поставлен чекбокс'
-        # проверяем все имена полей, подсказки, плейсхолдеры(если есть)
-        assert cp.notifications.rn_field_name_and_hint_check() is True, 'Ошибка проверки имени и подсказки поля РН'
-        # проверяем текст рядом с чекбоксом "отправить всем"
-        assert cp.notifications.rn_send_to_all_name_check() is True, 'Ошибка проверки имени поля "Отправить всем'
-        # проверяем поля ниже
-        assert cp.notifications.level_field_name_check() is True, 'Ошибка проверки имени поля "Цвет уведомления"'
-        assert cp.notifications.type_field_name_check() is True, 'Ошибка проверки имени поля "Уровень уведомления"'
-        assert cp.notifications.header_field_name_check() is True, 'Ошибка проверки имени поля "Заголовок уведомления"'
-        assert cp.notifications.text_field_name_check() is True, 'Ошибка проверки имени поля "Текст уведомления"'
-        # проверяем работу селектора Цвета уведомления синий/желт/красный/убрать выбор
-        cp.notifications.level_select('blue')
-        cp.notifications.level_select('yellow')
-        cp.notifications.level_select('red')
-        cp.notifications.level_select()
-        # меняем тип уведомления на "с кнопкой" и проверяем появившиеся поля
-        cp.notifications.type_select('with')
-        # cp.notifications.type_select('without')  # для отладки
-        # cp.notifications.type_select()  # для отладки
-        assert cp.notifications.button_text_name_and_hint_check() is True, \
-            'Название и подсказка поля "Текст на кнопке" не соответсвуют тому что должны'
-        assert cp.notifications.button_link_name_and_hint_check() is True, \
-            'Название и подсказка поля "Ссылка на кнопке" не соответсвуют тому что должны'
-        # # меняем тип обратно на "без кнопки" и жмём кнопку отправить/сохранить
-        cp.notifications.type_select()
+        cp.notifications.checkbox_rn(action=test_data)
         cp.notifications.save()
-        # и проверяем ошибки валидации которые должны заменить подсказки
-        assert cp.notifications.check_errors_in_modal() is True, \
-            'Набор ошибок не соответсвует должному'
-        # снова меняем тип уведомления на "с кнопкой"
-        cp.notifications.type_select('with')
-        cp.notifications.save()
-        assert cp.notifications.check_errors_in_modal(btn=True) is True, \
-            'Набор ошибок не соответсвует должному'
-        # ставим чекбокс "отправить всем" и ставим "без кнопки"
-        cp.notifications.type_select('without')
-        cp.notifications.checkbox_rn('place')
-        cp.notifications.save()
-        assert cp.notifications.check_errors_in_modal(btn=False, chkbx=True) is True, \
-            'Набор ошибок не соответсвует должному'
-        # Возвращаем всё на дефолтные значения
-        cp.notifications.type_select()
-        cp.notifications.checkbox_rn('remove')
-        cp.notifications.save()
-        assert cp.notifications.check_errors_in_modal() is True, \
-            'Набор ошибок не соответсвует должному'
+        assert cp.notifications.get_rn_error() == expected, \
+            f'Ожидалось {expected} но получили{cp.notifications.get_rn_error()}'
+        assert cp.notifications.get_snack_result() == 'incorrect', \
+            f'Ожидалось сообщение об ошибке но получили {cp.notifications.get_snack_result()}'
 
-
-    @allure.title('Проверка имён/подсказок/валидации полей в модалке за за superadmin')
-    def test_notification_fields_validation_as_superadmin(self, cp, data_cp_superadmin):
-        username, password = data_cp_superadmin[1], data_cp_superadmin[2]
-        cp.cp_auth_form.open().login(username, password)
-        cp.side_bar_cp.click_notifications()
-        cp.notifications.open_modal()
-        # проверяем что чекбокса по умолчанию при открытии модалки - нет
-        assert cp.notifications.checkbox_rn_is_enable() is False, 'В Чекбоксе "Отправить всем" поставлен чекбокс'
-        # проверяем все имена полей, подсказки, плейсхолдеры(если есть)
-        assert cp.notifications.rn_field_name_and_hint_check() is True, 'Ошибка проверки имени и подсказки поля РН'
-        # проверяем текст рядом с чекбоксом "отправить всем"
-        assert cp.notifications.rn_send_to_all_name_check() is True, 'Ошибка проверки имени поля "Отправить всем'
-        # проверяем поля ниже
-        assert cp.notifications.level_field_name_check() is True, 'Ошибка проверки имени поля "Цвет уведомления"'
-        assert cp.notifications.type_field_name_check() is True, 'Ошибка проверки имени поля "Уровень уведомления"'
-        assert cp.notifications.header_field_name_check() is True, 'Ошибка проверки имени поля "Заголовок уведомления"'
-        assert cp.notifications.text_field_name_check() is True, 'Ошибка проверки имени поля "Текст уведомления"'
-        # проверяем работу селектора Цвета уведомления синий/желт/красный/убрать выбор
-        cp.notifications.level_select('blue')
-        cp.notifications.level_select('yellow')
-        cp.notifications.level_select('red')
-        cp.notifications.level_select()
-        # меняем тип уведомления на "с кнопкой" и проверяем появившиеся поля
-        cp.notifications.type_select('with')
-        # cp.notifications.type_select('without')  # для отладки
-        # cp.notifications.type_select()  # для отладки
-        assert cp.notifications.button_text_name_and_hint_check() is True, \
-            'Название и подсказка поля "Текст на кнопке" не соответсвуют тому что должны'
-        assert cp.notifications.button_link_name_and_hint_check() is True, \
-            'Название и подсказка поля "Ссылка на кнопке" не соответсвуют тому что должны'
-        # # меняем тип обратно на "без кнопки" и жмём кнопку отправить/сохранить
-        cp.notifications.type_select()
-        cp.notifications.save()
-        # и проверяем ошибки валидации которые должны заменить подсказки
-        assert cp.notifications.check_errors_in_modal() is True, \
-            'Набор ошибок не соответсвует должному'
-        # снова меняем тип уведомления на "с кнопкой"
-        cp.notifications.type_select('with')
-        cp.notifications.save()
-        assert cp.notifications.check_errors_in_modal(btn=True) is True, \
-            'Набор ошибок не соответсвует должному'
-        # ставим чекбокс "отправить всем" и ставим "без кнопки"
-        cp.notifications.type_select('without')
-        cp.notifications.checkbox_rn('place')
-        cp.notifications.save()
-        assert cp.notifications.check_errors_in_modal(btn=False, chkbx=True) is True, \
-            'Набор ошибок не соответсвует должному'
-        # Возвращаем всё на дефолтные значения
-        cp.notifications.type_select()
-        cp.notifications.checkbox_rn('remove')
-        cp.notifications.save()
-        assert cp.notifications.check_errors_in_modal() is True, \
-            'Набор ошибок не соответсвует должному'
-
-
-    @allure.title('Проверка невозможности создать уведомление с невалидным набором данных полей/селекторов за user')
-    def test_unnable_to_create_notification_with_invalid_data_as_user(self, cp, data_cp_user,
-                                                                      suit_notification_invalid):
+    @allure.title('Проверка валидации поля при вводе перечня РН невалидного формата из цифр запятых и пробелов')
+    @allure.id('CP/Notification/№ 6')
+    def test_notification_rn_list_validation_as_user(self, cp, data_cp_user, suit_notification_invalid_rn):
         username, password = data_cp_user[1], data_cp_user[2]
         cp.cp_auth_form.open().login(username, password)
         cp.side_bar_cp.click_notifications()
         cp.notifications.open_modal()
-        # Вводим данные из suit_notification_invalid
-        cp.notifications.fill_notification(suit_notification_invalid)
+        cp.notifications.fill_notification(suit_notification_invalid_rn)
         cp.notifications.save()
-        # Проверяем ошибки согласно suit_notification_invalid
-        assert cp.notifications.check_errors_in_modal(suit_notification_invalid) is True, \
-            'Набор ошибок не соответсвует должному'
+        assert cp.notifications.get_rn_error() == 'incorrect', \
+            f'Ожидалось что {suit_notification_invalid_rn.rn} не пройдёт валидацию'
+        assert cp.notifications.get_snack_result() == 'incorrect', \
+            f'Ожидалось сообщение об ошибке но получили {cp.notifications.get_snack_result()}'
 
-    @allure.title('Проверка невозможности создать уведомление с невалидным набором данных полей/селекторов за user')
-    def test_unnable_to_create_notification_with_invalid_data_as_superadmin(self, cp, data_cp_superadmin,
-                                                                            suit_notification_invalid):
-        username, password = data_cp_superadmin[1], data_cp_superadmin[2]
+    @allure.title('Проверка валидации отсутствия выбора в "Цвет уведомления"')
+    @allure.id('CP/Notification/№ 7')
+    @pytest.mark.parametrize('test_data, expected', [(None, 'empty'), ('blue', False),('yellow', False),('red', False)])
+    def test_notification_level_validation_as_user(self, cp, data_cp_user, test_data, expected):
+        username, password = data_cp_user[1], data_cp_user[2]
         cp.cp_auth_form.open().login(username, password)
         cp.side_bar_cp.click_notifications()
         cp.notifications.open_modal()
-        # Вводим данные из suit_notification_invalid
-        cp.notifications.fill_notification(suit_notification_invalid)
+        cp.notifications.level_select(test_data)
         cp.notifications.save()
-        # Проверяем ошибки согласно suit_notification_invalid
-        assert cp.notifications.check_errors_in_modal(suit_notification_invalid) is True, \
-            'Набор ошибок не соответсвует должному'
+        assert cp.notifications.get_level_error() == expected, \
+            f'Ожидалось {expected} но получили {cp.notifications.get_level_error()}'
+        assert cp.notifications.get_snack_result() == 'incorrect', \
+            f'Ожидалось сообщение об ошибке но получили {cp.notifications.get_snack_result()}'
+
+    @allure.title('Проверка валидации отсутствия выбора в "Тип уведомления"')
+    @allure.id('CP/Notification/№ 8')
+    @pytest.mark.parametrize('test_data, expected', [(None, 'empty'), ('with', False), ('without', False)])
+    def test_notification_level_validation_as_user(self, cp, data_cp_user, test_data, expected):
+        username, password = data_cp_user[1], data_cp_user[2]
+        cp.cp_auth_form.open().login(username, password)
+        cp.side_bar_cp.click_notifications()
+        cp.notifications.open_modal()
+        cp.notifications.type_select(test_data)
+        cp.notifications.save()
+        assert cp.notifications.get_type_error() == expected, \
+            f'Ожидалось {expected} но получили {cp.notifications.get_type_error()}'
+        assert cp.notifications.get_snack_result() == 'incorrect', \
+            f'Ожидалось сообщение об ошибке но получили {cp.notifications.get_snack_result()}'
+
+    @allure.title('Проверка валидации отсутствия текста в "Заголовок уведомления"')
+    @allure.id('CP/Notification/№ 9')
+    @pytest.mark.parametrize('test_data, expected', [(None, 'empty'), ('some header', False)])
+    def test_notification_header_validation_as_user(self, cp, data_cp_user, test_data, expected):
+        username, password = data_cp_user[1], data_cp_user[2]
+        notification = Notification(header=test_data)
+        cp.cp_auth_form.open().login(username, password)
+        cp.side_bar_cp.click_notifications()
+        cp.notifications.open_modal()
+        cp.notifications.fill_notification(notification)
+        cp.notifications.save()
+        assert cp.notifications.get_header_error() == expected, \
+            f'Ожидалось {expected} но получили {cp.notifications.get_header_error()}'
+        assert cp.notifications.get_snack_result() == 'incorrect', \
+            f'Ожидалось сообщение об ошибке но получили {cp.notifications.get_snack_result()}'
+
+    @allure.title('Проверка валидации "Текста на кнопке" при типе "С кнопкой"')
+    @allure.id('CP/Notification/№ 10')
+    @pytest.mark.parametrize('test_data, expected', [(None, 'empty'), ('name', False),
+                                                     ('still valid btn name', False)
+                                                     , ('tooo long button name', 'length')
+                                                     , ('toooo long button name', 'length')])
+    def test_notification_btn_name_validation_as_user(self, cp, data_cp_user, test_data, expected):
+        username, password = data_cp_user[1], data_cp_user[2]
+        notification = Notification(notif_type='with', bname=test_data)
+        cp.cp_auth_form.open().login(username, password)
+        cp.side_bar_cp.click_notifications()
+        cp.notifications.open_modal()
+        cp.notifications.fill_notification(notification)
+        cp.notifications.save()
+        assert cp.notifications.get_btn_text_error() == expected, \
+            f'Ожидалось {expected} но получили {cp.notifications.get_btn_text_error()}'
+        assert cp.notifications.get_snack_result() == 'incorrect', \
+            f'Ожидалось сообщение об ошибке но получили {cp.notifications.get_snack_result()}'
+
+    @allure.title('Проверка валидации "Ссылка на кнопке" при типе "С кнопкой"')
+    @allure.id('CP/Notification/№ 10')
+    @pytest.mark.parametrize('test_data, expected', [(None, 'empty'),
+                                                     ('https://partner.svrauto.ru/options/5/info', False)])
+    def test_notification_btn_link_empty_validation_as_user(self, cp, data_cp_user, test_data, expected):
+        username, password = data_cp_user[1], data_cp_user[2]
+        notification = Notification(notif_type='with', blink=test_data)
+        cp.cp_auth_form.open().login(username, password)
+        cp.side_bar_cp.click_notifications()
+        cp.notifications.open_modal()
+        cp.notifications.fill_notification(notification)
+        cp.notifications.save()
+        assert cp.notifications.get_btn_link_error() == expected, \
+            f'Ожидалось {expected} но получили {cp.notifications.get_btn_link_error()}'
+        assert cp.notifications.get_snack_result() == 'incorrect', \
+            f'Ожидалось сообщение об ошибке но получили {cp.notifications.get_snack_result()}'
+
+    @allure.title('Проверка валидации "Ссылки на кнопке" при типе "С кнопкой"')
+    @allure.id('CP/Notification/№ 11')
+    def test_notification_btn_link_formate_validation_as_user(self, cp, data_cp_user, suit_notification_invalid_links):
+        username, password = data_cp_user[1], data_cp_user[2]
+        cp.cp_auth_form.open().login(username, password)
+        cp.side_bar_cp.click_notifications()
+        cp.notifications.open_modal()
+        cp.notifications.fill_notification(suit_notification_invalid_links)
+        cp.notifications.save()
+        assert cp.notifications.get_btn_link_error() == 'incorrect', \
+            f'Ожидалось {expected} но получили {cp.notifications.get_btn_link_error()}'
+        assert cp.notifications.get_snack_result() == 'incorrect', \
+            f'Ожидалось сообщение об ошибке но получили {cp.notifications.get_snack_result()}'
+
+    @allure.title('Создание валидного уведомления и проверка его содержимого(сохранилось только важное из введённого)')
+    @allure.id('CP/Notification/№ 18')
+    def test_notification_check_created_notification(self, cp, data_cp_user, suit_notification_valid):
+        username, password = data_cp_user[1], data_cp_user[2]
+        notification = suit_notification_valid
+        cp.cp_auth_form.open().login(username, password)
+        cp.side_bar_cp.click_notifications()
+        cp.notifications.open_modal()
+        cp.notifications.fill_notification(notification)
+        cp.notifications.save()
+        assert cp.notifications.get_snack_result() == 'created'
+        cp.notifications.find_edit_button_by_header_and_status('created', notification.header)
+        created_notification = cp.notifications.read_notification()
+        # print(notification)
+        # print(created_notification)
+        assert notification == created_notification

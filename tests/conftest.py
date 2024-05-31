@@ -6,14 +6,12 @@ from selenium.webdriver.chrome.service import Service
 from utils.env import Env
 
 
-# REMOTE = Env().remote_webdriver_url
 fixture = None
 
 
 @pytest.fixture
 def app(request):
     global fixture
-    # stage = request.config.getoption("--stage")
     browser = request.config.getoption("--browser")
     if fixture is None or not fixture.is_valid():
         fixture = Application(browser=browser)
@@ -34,25 +32,16 @@ def pytest_generate_tests(metafunc):
     for fixture in metafunc.fixturenames:
         if fixture.startswith("suit_"):  # "suit_filename" for test data on models (suit_notification_valid as example)
             testdata = load_from_module(fixture[5:])
-            metafunc.parametrize(fixture, testdata, ids=[str(x.case_name) for x in testdata])
+            metafunc.parametrize(fixture, testdata, ids=[str(x.number) for x in testdata])
         if fixture.startswith("data_"):  # "data_filename" for test data on tuples (data_cp_user as example)
             testdata = load_from_module(fixture[5:])
             metafunc.parametrize(fixture, testdata, ids=[str(x[1]) for x in testdata])
-        # elif fixture.startswith("json_"):  # "json_filename" for test data in json (json_cp_user as example)
-        #     testdata = load_from_json(fixture[5:])
-        #     metafunc.parametrize(fixture, testdata, ids=[str(x) for x in testdata])
 
 
 # работа с файлами .py в папке data
 # аналог 'from data.{имя файла}.py import testdata' для каждого файла с тестами
 def load_from_module(module):
     return importlib.import_module("data.%s" % module).testdata
-
-
-# # работа с json
-# def load_from_json(file):
-#     with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "data/%s.json" % file)) as f:
-#         return jsonpickle.decode(f.read())
 
 
 class Application:
