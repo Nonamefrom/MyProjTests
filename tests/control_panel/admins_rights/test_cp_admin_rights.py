@@ -54,7 +54,7 @@ class TestAdminRights:
         username, password = data_cp_superadmin[1], data_cp_superadmin[2]
         cp.cp_auth_form.open().login(username, password)
         cp.common_steps.find_elem(fts)
-        assert cp.fts.link_to_warranty_tab_exist() is True, f'У Администратора нет вкладки Привязки РГ в опции {fts}'
+        assert cp.fts.link_to_warranty_tab_present() is True, f'У Администратора нет вкладки Привязки РГ в опции {fts}'
         assert cp.fts.link_button_is_present() is True, f'На вкладке Привязки РГ в опции {fts} нет кнопки "Связать"'
 
     @allure.title('Проверка отсутствия вкладки связывания БШМ с РГ в ПУ у Пользователя, и нет кнопки "Связать"')
@@ -64,7 +64,7 @@ class TestAdminRights:
         username, password = data_cp_user[1], data_cp_user[2]
         cp.cp_auth_form.open().login(username, password)
         cp.common_steps.find_elem(fts)
-        assert cp.fts.link_to_warranty_tab_exist() is False, f'У Пользователя видна вкладка Привязки РГ в опции {fts}'
+        assert cp.fts.link_to_warranty_tab_present() is False, f'У Пользователя видна вкладка Привязки РГ в опции {fts}'
 
     @allure.title('Проверка наличия кнопки "Отправить уведомление" в ПУ у Администратора')
     @allure.id('CP/Notification/№ 12')
@@ -79,7 +79,7 @@ class TestAdminRights:
         cp.notifications.fill_notification(notification)
         cp.notifications.save()
         assert cp.notifications.get_snack_result() == 'created', 'Нет нотификейшена об успешном создании'
-        time.sleep(7)  # Костыль для того что бы исчез предыдущий нотификейшн в снекбаре. 5 секунд + анимация + запас
+        assert cp.notifications.wait_till_snack_disappear() is True
         cp.notifications.find_send_button_by_header_and_status('created', header)
         assert cp.notifications.get_snack_result() == 'sent', 'Созданное уведомление не найдено'
 
@@ -96,6 +96,6 @@ class TestAdminRights:
         cp.notifications.fill_notification(notification)
         cp.notifications.save()
         assert cp.notifications.get_snack_result() == 'created', 'Нет нотификейшена об успешном создании'
-        time.sleep(7)  # Костыль для того что бы исчез предыдущий нотификейшн в снекбаре. 5 секунд + анимация + запас
+        assert cp.notifications.wait_till_snack_disappear() is True
         cp.notifications.find_send_button_by_header_and_status('created', header)
         assert cp.notifications.get_snack_result() == 'sent', 'Созданное уведомление не найдено'

@@ -30,7 +30,7 @@ class FtsConnection(BasePage):
         phrase = wait.until(EC.visibility_of_element_located(self.ADDITIONAL_TAB_H3)).text
         return phrase
 
-    @allure.step('Проверка наличия кнопки связывания бшм с рг')
+    @allure.step('Проверка наличия и состояния кнопки связывания бшм с рг')
     def link_button_is_present(self):
         active = self.activated(self.FTS_TAB_LINK_BUTTON, 'class')
         disabled = self.disabled(self.FTS_TAB_LINK_BUTTON, 'class')
@@ -41,10 +41,9 @@ class FtsConnection(BasePage):
             if 'cordiant' in opt_name.lower():
                 return True
 
-    @allure.step('Проверка наличия вкладки связывания бшм с рг')
-    def link_to_warranty_tab_exist(self):
+    @allure.step('Проверка наличия и работы вкладки связывания бшм с рг')
+    def link_to_warranty_tab_present(self):
         opt_name = self.get_text(self.FTS_TAB_H1)
-        # print(opt_name)
         try:
             if 'cordiant' in opt_name.lower():
                 if self.element_is_visible(self.FTS_TAB_CORDIANT_NOT_ACTIVE):

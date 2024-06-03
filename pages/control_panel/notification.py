@@ -99,7 +99,7 @@ class NotificationPage(BasePage):
     BTN_NAME_LENGTH = 'Количество символов в поле "Текст кнопки" не может превышать 20'
     BTN_LINK_IS_MANDATORY = 'Поле "Ссылка кнопки" обязательно для заполнения'
     BTN_LINK_WRONG_FORMAT = 'Поле "Ссылка кнопки" имеет ошибочный формат'
-    SNACKBAR_NOTIFICATION_LOC = By.XPATH, '//div[@class="sa-snackbar__container"]//div[@class="sa-snackbar__title"]'
+    SNACKBAR_NOTIFICATION_LOC = (By.XPATH, '//div[@class="sa-snackbar__title"]')
     SNACK_ERROR_INCORRECT_TEXT = 'Указанные данные некорректны'
     SNACK_CREATE_SUCCESS_TEXT = 'Уведомление успешно создано'
     SNACK_SAVE_SUCCESS_TEXT = 'Уведомление успешно обновлено'
@@ -236,7 +236,7 @@ class NotificationPage(BasePage):
         sent - сообщение об успешной отправке
         earlier - ошибка отправки так как было отправлено ранее"""
         text = self.get_text(self.SNACKBAR_NOTIFICATION_LOC)
-        # print(text)
+        print(text)
         if text == self.SNACK_ERROR_INCORRECT_TEXT:
             return 'incorrect'
         elif text == self.SNACK_CREATE_SUCCESS_TEXT:
@@ -249,6 +249,10 @@ class NotificationPage(BasePage):
             return 'earlier'
         else:
             raise ValueError(f'Неизвестный текст в : "{text}" в "get_snack_result"')
+
+    def wait_till_snack_disappear(self):
+        return self.element_is_not_visible(self.SNACKBAR_NOTIFICATION_LOC, 7)
+
 
     @allure.step('Смотрим ошибку под полем ввода РН')
     def get_rn_error(self):
@@ -429,7 +433,7 @@ class NotificationPage(BasePage):
 
     @allure.step('Читаем данные с модалки уведомления')
     def read_notification(self):
-        rn = self.get_text(self.RN_FIELD_LOC)
+        rn = self.get_attribute_value(self.RN_FIELD_LOC, 'value')
         if rn == '':
             rn = None
         checkbox = self.checkbox_rn_is_enable()
@@ -449,12 +453,13 @@ class NotificationPage(BasePage):
             notif_type = 'with'
         else:
             raise ValueError(f'Неизвестный тип уведомления: {notif_type}')
-        header = self.get_text(self.HEADER_FIELD_LOC)
+        header = self.get_attribute_value(self.HEADER_FIELD_LOC, 'value')
+        text = self.get_attribute_value(self.TEXT_FIELD_LOC, 'value')
         bname, blink = None, None
         if notif_type == 'with':
-            bname = self.get_text(self.BTN_TEXT_FIELD_LOC)
-            blink = self.get_text(self.BTN_LINK_FIELD_LOC)
+            bname = self.get_attribute_value(self.BTN_TEXT_FIELD_LOC, 'value')
+            blink = self.get_attribute_value(self.BTN_LINK_FIELD_LOC, 'value')
 
         notification = (Notification(rn=rn, checkbox=checkbox, level=level, notif_type=notif_type, header=header,
-                                     bname=bname, blink=blink))
+                                     text=text, bname=bname, blink=blink))
         return notification

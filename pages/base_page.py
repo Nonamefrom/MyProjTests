@@ -49,14 +49,11 @@ class BasePage:
     def link_end_with(self, link_end):
         return self.driver.current_url.endswith(link_end)
 
-    def get_text(self, elem, timeout=1):
-        self.element_is_present(elem)  # 5 сек ждём элемент и 1 секунда таймаут если локатор для текста не корректный
-        text = wait(self.driver, timeout).until(EC.visibility_of_element_located(elem)).text
-        return text
+    def get_text(self, elem, timeout=3):
+        return wait(self.driver, timeout).until(EC.visibility_of_element_located(elem)).text
 
     def get_attribute_value(self, elem, attr):
-        text = self.element_is_present(elem).get_attribute(attr)
-        return text
+        return self.element_is_present(elem).get_attribute(attr)
 
     def get_cell_count(self, table_loc, timeout=5):
         try:

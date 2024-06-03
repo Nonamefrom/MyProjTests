@@ -37,15 +37,14 @@ class Notification:
                 self.notif_type, self.header, self.text, self.bname, self.blink))
 
     def __eq__(self, other):
-        # Закомментировано потому что в уже созданном уведомлении пока нельзя достать значения из текстовых полей
         return (
-                # self.rn == other.rn and
+                (self.rn == other.rn) or (other.rn is None) and
                 self.checkbox == other.checkbox and
                 self.level == other.level and
                 self.notif_type == other.notif_type
-                # and self.header == other.header
-                # and self.text == other.text
-                # and self.bname == other.bname
-                # and self.blink == other.blink
+                and self.header == other.header
+                and self.text == other.text
+                and self.bname == other.bname
+                and self.blink == other.blink
                 )
 

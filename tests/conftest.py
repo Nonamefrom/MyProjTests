@@ -55,13 +55,6 @@ class Application:
         elif browser == "chrome" or browser == "cd":
             self.driver = webdriver.Chrome()
             self.driver.maximize_window()
-            # self.driver.set_window_rect(width=1280, height=720)
-            # try:
-            #     self.driver = webdriver.Chrome()
-            # except:
-            #     service = Service(executable_path=f"{Env().local_chrome_driver}")
-            #     # service = Service(executable_path='C:\PycharmProjects\webdrivers\chromedriver.exe')
-            #     self.driver = webdriver.Chrome(service=service)
 
         elif browser == "firefox" or browser == "ff":
             self.driver = webdriver.Firefox()

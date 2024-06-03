@@ -31,7 +31,7 @@ class TestCpAndPcNotifications:
         cp.notifications.fill_notification(notification)
         cp.notifications.save()
         assert cp.notifications.get_snack_result() == 'created', 'Нет нотификейшена об успешном создании'
-        time.sleep(7)  # Костыль для того что бы исчез предыдущий нотификейшн в снекбаре. 5 секунд + анимация + запас
+        assert cp.notifications.wait_till_snack_disappear() is True
         cp.driver.switch_to.new_window()
         cp.cabinet_landing_page.open()
         cp.cabinet_landing_page.login_all_env(cp, rn)
@@ -78,7 +78,7 @@ class TestCpAndPcNotifications:
         cp.notifications.fill_notification(notification)
         cp.notifications.save()
         assert cp.notifications.get_snack_result() == 'created', 'Нет нотификейшена об успешном создании'
-        time.sleep(7)  # Костыль для того что бы исчез предыдущий нотификейшн в снекбаре. 5 секунд + анимация + запас
+        assert cp.notifications.wait_till_snack_disappear() is True
         cp.driver.switch_to.new_window()
         cp.cabinet_landing_page.open()
         cp.cabinet_landing_page.login_all_env(cp, rn)
@@ -120,7 +120,7 @@ class TestCpAndPcNotifications:
         cp.notifications.fill_notification(notification)
         cp.notifications.save()
         assert cp.notifications.get_snack_result() == 'created', 'Нет нотификейшена об успешном создании'
-        time.sleep(7)  # Костыль для того что бы исчез предыдущий нотификейшн в снекбаре. 5 секунд + анимация + запас
+        assert cp.notifications.wait_till_snack_disappear() is True
         cp.driver.switch_to.new_window()
         cp.cabinet_landing_page.open()
         rn = random.choice(rn_list)
@@ -156,7 +156,7 @@ class TestCpAndPcNotifications:
         cp.notifications.fill_notification(notification)
         cp.notifications.save()
         assert cp.notifications.get_snack_result() == 'created', 'Нет нотификейшена об успешном создании'
-        time.sleep(7)  # Костыль для того что бы исчез предыдущий нотификейшн в снекбаре. 5 секунд + анимация + запас
+        assert cp.notifications.wait_till_snack_disappear() is True
         cp.driver.switch_to.new_window()
         cp.cabinet_landing_page.open()
         rn = random.choice(rn_list)
