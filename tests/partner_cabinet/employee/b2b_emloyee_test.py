@@ -3,16 +3,7 @@
 import time
 import allure
 import pytest
-
 from data.test_data import ExpectedResults as ER, RegData, GenerateData
-
-B2B_MAIL = RegData.B2B_MAIL
-WRONG_MAIL = RegData.WRONG_MAIL
-PHONE = GenerateData.PHONE
-NAME = GenerateData.NAME
-LAST_NAME = GenerateData.LAST_NAME
-TIME_MAIL = GenerateData.TIME_MAIL
-RANDOM_MAIL = GenerateData.RANDOM_MAIL
 
 
 @allure.suite("Тесты страницы B2B сотрудников")
@@ -22,7 +13,8 @@ class TestB2BEmployees:
     @allure.id('Partner/Employee/№ 1')
     def test_unique_phone(self, emp):
         expected_error = 'Сотрудник с таким Телефоном уже существует'
-        name, last_name, mail, mail_1, phone = NAME, LAST_NAME, TIME_MAIL, RANDOM_MAIL, PHONE
+        name, last_name, mail, mail_1, phone = (GenerateData.NAME, GenerateData.LAST_NAME, GenerateData.TIME_MAIL,
+                                                GenerateData.RANDOM_MAIL, GenerateData.PHONE)
         emp.cabinet_landing_page.open().login_all_env(emp)
         emp.cabinet_side_bar.click_b2b_employee()
         emp.b2b_employee_page.call_modal_menu().input_name(name).input_last_name(last_name).input_email(mail)
@@ -42,7 +34,7 @@ class TestB2BEmployees:
     @allure.id('Partner/Employee/№ 2')
     def test_unique_mail(self, emp):
         expected_error = 'Пользователь с таким email уже существует'
-        name, last_name, mail = NAME, LAST_NAME, TIME_MAIL
+        name, last_name, mail = GenerateData.NAME, GenerateData.LAST_NAME, GenerateData.TIME_MAIL
         emp.cabinet_landing_page.open().login_all_env(emp)
         emp.cabinet_side_bar.click_b2b_employee()
         emp.b2b_employee_page.call_modal_menu().input_name(name).input_last_name(last_name).input_email(mail)
@@ -62,7 +54,7 @@ class TestB2BEmployees:
     def test_add_and_delete_user(self, emp):
         mail_theme_added_user = 'Вам открыт доступ к Точке Движения'
         mail_theme_deleted_user = 'Ваша учетная запись удалена'
-        name, last_name, mail = NAME, LAST_NAME, RANDOM_MAIL
+        name, last_name, mail = GenerateData.NAME, GenerateData.LAST_NAME, GenerateData.RANDOM_MAIL
         emp.cabinet_landing_page.open().login_all_env(emp)
         emp.cabinet_side_bar.click_b2b_employee()
         emp.b2b_employee_page.call_modal_menu().input_name(name).input_last_name(last_name).input_email(mail)
@@ -112,13 +104,12 @@ class TestB2BEmployees:
     @allure.title("Тест проверки валидации поля email")
     @allure.id('Partner/Employee/№ 6')
     def test_check_wrong_mail_validation(self, emp):
-        # mail_error = "Поле Почта должно быть действительным электронным адресом."
         emp.cabinet_landing_page.open().login_all_env(emp)
         emp.cabinet_side_bar.click_b2b_employee()
         emp.b2b_employee_page.call_modal_menu()
         emp.b2b_employee_page.set_chose_access()
         emp.b2b_employee_page.click_add_employee()
-        emp.b2b_employee_page.input_email(WRONG_MAIL)
+        emp.b2b_employee_page.input_email(RegData.WRONG_MAIL)
         emp.b2b_employee_page.click_add_employee()
         time.sleep(1)
         mail_text = emp.b2b_employee_page.error_mail_massage()
@@ -126,7 +117,7 @@ class TestB2BEmployees:
                                                              f" но найдено {mail_text}")
 
     @allure.title("Уборка тестовых юзеров после тестов")
-    @allure.id('Partner/Employee/№ 00000')
+    @allure.id('Partner/Employee/№ 1000001')
     @pytest.hookimpl(trylast=True)
     def test_delete_all_test_users(self, emp):
         emp.cabinet_landing_page.open().login_all_env(emp)
