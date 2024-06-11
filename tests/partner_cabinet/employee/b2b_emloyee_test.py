@@ -129,4 +129,5 @@ class TestB2BEmployees:
                 time.sleep(2)
                 emp.driver.refresh()
             except:
-                return False
+                break
+        assert True

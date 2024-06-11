@@ -12,9 +12,9 @@ from model.notification import Notification
 class NotificationPage(BasePage):
     # Текст на странице "Уведомления"
     TEXT_H1 = 'Уведомления'  # тут почему-то нет пробелов хотя в локаторе они есть, там: ' Уведомления '
-    TEXT_H1_LOC = By.XPATH, '//*[@class="text-h1"]'
+    TEXT_H1_LOC = By.XPATH, '//span[@class="text-h1"][contains(text(),"Уведомления")]'
     TEXT_H3 = 'Уведомления для партнеров в «Кабинете услуг»'  # аналогично н1
-    TEXT_H3_LOC = By.XPATH, '//*[@class="notifications-page__subtitle mb-7 text-h3"]'
+    TEXT_H3_LOC = By.XPATH, '//div[contains(text(),"Уведомления для партнеров в «Кабинете услуг»")]'
     # Кнопки на странице уведомлений ПУ
     ADD_BUTTON_TEXT = 'ДОБАВИТЬ'  # аналогично н1, только тут капсом
     ADD_BUTTON = By.XPATH, '//*[@data-qa="add-new-notification-btn"]'
@@ -112,6 +112,7 @@ class NotificationPage(BasePage):
     @allure.step('Проверка текста Н1 на странице уведомлений')
     def h1_text_check(self) -> bool:
         h1 = self.get_text(self.TEXT_H1_LOC)
+        # print(h1)
         if h1 == self.TEXT_H1:
             return True
         else:
@@ -236,7 +237,7 @@ class NotificationPage(BasePage):
         sent - сообщение об успешной отправке
         earlier - ошибка отправки так как было отправлено ранее"""
         text = self.get_text(self.SNACKBAR_NOTIFICATION_LOC)
-        print(text)
+        # print(text)
         if text == self.SNACK_ERROR_INCORRECT_TEXT:
             return 'incorrect'
         elif text == self.SNACK_CREATE_SUCCESS_TEXT:
