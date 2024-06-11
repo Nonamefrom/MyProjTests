@@ -2,6 +2,7 @@ import allure
 from selenium.webdriver.common.by import By
 from pages.base_page import BasePage
 
+
 class SideBarCpPage(BasePage):
     OPTIONS = (By.XPATH, '//a[@href="/options"]')
     NEWS = (By.XPATH, '//a[@href="/news"]')
@@ -10,6 +11,7 @@ class SideBarCpPage(BasePage):
     STATISTIC = (By.XPATH, '//a[@href="/statistic"]')
     DOWNLOADED_FILES = (By.XPATH, '//a[@href="/files"]')
     JOURNAL = (By.XPATH, '//a[@href="/analytics"]')
+    NOTIFICATIONS = (By.XPATH, '//a[@href="/notifications"]')
 
     @allure.step("Переход на вкладку Опции")
     def click_options(self):
@@ -38,3 +40,7 @@ class SideBarCpPage(BasePage):
     @allure.step("Переход на вкладку Загрузка файлов")
     def click_downloaded_files(self):
         self.click(self.DOWNLOADED_FILES)
+
+    @allure.step("Переход на вкладку Уведомления")
+    def click_notifications(self):
+        self.click(self.NOTIFICATIONS)

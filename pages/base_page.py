@@ -1,23 +1,11 @@
 import time
+import re
 from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
 
 
 class BasePage:
 
-    # Examples
-    # def __init__(self, driver, url=None):
-    #     self.driver = driver
-    #     self.url = url
-    #     self.wait = wait(driver, timeout=5, poll_frequency=0.1)
-    #
-    # def open(self):
-    #     self.driver.get(self.url)
-    #     return self
-    #
-    # def element_is_visible(self, locator):
-    #     return self.wait.until(EC.visibility_of_element_located(locator))
-    #
     def __init__(self, driver, url=None):
         self.driver = driver
         self.url = url
@@ -61,3 +49,38 @@ class BasePage:
     def link_end_with(self, link_end):
         return self.driver.current_url.endswith(link_end)
 
+    def get_text(self, elem, timeout=3):
+        return wait(self.driver, timeout).until(EC.visibility_of_element_located(elem)).text
+
+    def get_attribute_value(self, elem, attr):
+        return self.element_is_present(elem).get_attribute(attr)
+
+    def get_cell_count(self, table_loc, timeout=5):
+        try:
+            return len(wait(self.driver, timeout).until(EC.visibility_of_all_elements_located(table_loc)))
+        except:
+            return 0
+
+    def activated(self, locator, attr) -> bool:
+        """Используется в случаях когда в аттрибуте не было active, но стало active при выборе"""
+        value = self.element_is_present(locator).get_attribute(attr)
+        # print(value)
+        res = re.split('-|__|--| ', value)
+        active = 'active'
+        for i in res:
+            if active in i:
+                return True
+        else:
+            return False
+
+    def disabled(self, locator, attr) -> bool:
+        """Используется в случаях когда в аттрибуте не было disable, но стало disabled при отключении"""
+        value = self.element_is_present(locator).get_attribute(attr)
+        # print(value)
+        res = re.split('-|__|--| ', value)
+        disabled = 'disabled'
+        for i in res:
+            if disabled in i:
+                return True
+        else:
+            return False

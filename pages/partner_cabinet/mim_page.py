@@ -19,7 +19,7 @@ class MimAuthPage(BasePage):
     GO_TO_PARTNER_CABINET = (By.XPATH, '//a[contains(text(),"Кабинет услуг")]')
 
     @allure.step("Ввод текста в поля и нажатие кнопки Войти")
-    def login_throw_mim(self, pages):
+    def login_with_mim(self, pages):
         pages.mim_page.open()
         auth_mim_h1 = pages.mim_page.check_auth_title()
         assert auth_mim_h1 == 'Войдите в МИМ', f"Expected '{auth_mim_h1}' but got other H1"

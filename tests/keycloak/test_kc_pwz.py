@@ -18,24 +18,28 @@ USER_PASS = RegData.USER_PASS
 @allure.sub_suite("Набор тестов авторизации Пункта выдачи заказов")
 class TestLoginPWZ:
     @allure.title("Запрет авторизации существ. пользователя с неправильным паролем ПВЗ")
+    @allure.id('KeyCloack/PWZ/№ 1')
     def test_pwz_login_wrong_pass(self, kc):
         kc.auth_pwz_form.open().go_to_login("internal").login(EMAIL, WRONG_USER_PASS)
         got_error = kc.auth_pwz_form.error_message()
         assert ER.ERROR_TEXT == got_error, f"Expected '{ER.ERROR_TEXT}' but got '{got_error}'"
 
     @allure.title("Запрет авторизации НЕ существ. b2b пользователя с правильным паролем ПВЗ")
+    @allure.id('KeyCloack/PWZ/№ 2')
     def test_pwz_login_b2b_wrong_mail(self, kc):
         kc.auth_pwz_form.open().go_to_login("b2b").login(WRONG_MAIL, USER_PASS)
         got_error = kc.auth_pwz_form.error_message()
         assert ER.ERROR_TEXT == got_error, f"Expected '{ER.ERROR_TEXT}' but got '{got_error}'"
 
     @allure.title("Запрет авторизации b2b в internal realm ПВЗ")
+    @allure.id('KeyCloack/PWZ/№ 3')
     def test_pwz_login_b2b_like_internal(self, kc):
         kc.auth_pwz_form.open().go_to_login("internal").login(B2B_MAIL, B2B_PASS)
         got_error = kc.auth_pwz_form.error_message()
         assert ER.ERROR_TEXT == got_error, f"Expected '{ER.ERROR_TEXT}' but got '{got_error}'"
 
     @allure.title("Авторизация корректного b2b пользователя ПВЗ")
+    @allure.id('KeyCloack/PWZ/№ 4')
     def test_pwz_login_correct_b2b_user(self, kc):
         kc.auth_pwz_form.open().go_to_login("b2b").login(B2B_MAIL, B2B_PASS)
         got_pwz_h1 = kc.pwz_main.pwz_h1_text()
@@ -45,6 +49,7 @@ class TestLoginPWZ:
         assert kc.auth_pwz_form.check_b2b_internal_buttons() is True, "Кнопки b2b/internal авторизации не найдены"
 
     @allure.title("Авторизация корректного internal пользователя ПВЗ")
+    @allure.id('KeyCloack/PWZ/№ 5')
     def test_pwz_login_correct_internal_user(self, kc):
         kc.auth_pwz_form.open().go_to_login("internal").login(INTERNAL_MAIL, INTERNAL_PASS)
         got_pwz_h1 = kc.pwz_main.pwz_h1_text()
@@ -54,6 +59,7 @@ class TestLoginPWZ:
         assert kc.auth_pwz_form.check_b2b_internal_buttons() is True, "Кнопки b2b/internal авторизации не найдены"
 
     @allure.title("Восстановление почты пользователя + Кейс несовпадения вводимых новых паролей ПВЗ")
+    @allure.id('KeyCloack/PWZ/№ 6')
     def test_recovery_mail_pwz(self, kc):
         kc.auth_pwz_form.open().go_to_login("internal").click_forgot_pass()
         kc.auth_pwz_form.input_recovery_mail(INTERNAL_MAIL)

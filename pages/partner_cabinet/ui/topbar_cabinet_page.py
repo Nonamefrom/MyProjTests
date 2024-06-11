@@ -1,3 +1,5 @@
+import time
+
 import allure
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -16,6 +18,7 @@ class TopBarCabinetPage(BasePage):
     DEAUTH_BUTTON = (By.XPATH, '//*[contains(text(),"Выход из приложения")]')
     DEAUTH_BUTTON_QA = (By.XPATH, '//*[@data-qa="logout"]')
     DEAUTH_BUTTON_EMP = (By.XPATH, '//*[@class="sa-icon sa-icon--name--Exit"]')
+    NOTIFICATION_BUTTON = (By.XPATH, '//div[@class="base-header-profile"]//button')
 
     @allure.step("Открытие дропдауна профиль в КУ")
     def open_profile_dropdown(self):
@@ -58,3 +61,9 @@ class TopBarCabinetPage(BasePage):
         wait = WebDriverWait(self.driver, 10)
         phrase = wait.until(EC.visibility_of_element_located(self.REGION)).text
         return phrase
+
+    @allure.step("Открыть уведомления")
+    def open_notifications(self):
+        self.element_is_visible(self.NOTIFICATION_BUTTON)
+        time.sleep(1)
+        self.click(self.NOTIFICATION_BUTTON)

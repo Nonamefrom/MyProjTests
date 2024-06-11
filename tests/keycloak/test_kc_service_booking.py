@@ -18,24 +18,28 @@ USER_PASS = RegData.USER_PASS
 @allure.sub_suite("Набор тестов авторизации Онлайн Записи")
 class TestLoginServiceBooking:
     @allure.title("Запрет авторизации существ. b2b пользователя с неправильным паролем ОЗ")
+    @allure.id('KeyCloack/ServiceBooking/№ 1')
     def test_sb_login_b2b_wrong_pass(self, kc):
         kc.sb_auth_form.open().go_to_login("b2b").login(EMAIL, WRONG_USER_PASS)
         got_error = kc.sb_auth_form.error_message()
         assert ER.ERROR_TEXT == got_error, f"Expected '{ER.ERROR_TEXT}' but got '{got_error}'"
 
     @allure.title("Запрет авторизации НЕ существ. b2b пользователя с правильным паролем ОЗ")
+    @allure.id('KeyCloack/ServiceBooking/№ 2')
     def test_sb_login_b2b_wrong_mail(self, kc):
         kc.sb_auth_form.open().go_to_login("b2b").login(WRONG_MAIL, USER_PASS)
         got_error = kc.sb_auth_form.error_message()
         assert ER.ERROR_TEXT == got_error, f"Expected '{ER.ERROR_TEXT}' but got '{got_error}'"
 
     @allure.title("Запрет авторизации b2b в internal realm ОЗ")
+    @allure.id('KeyCloack/ServiceBooking/№ 3')
     def test_sb_login_b2b_like_internal(self, kc):
         kc.sb_auth_form.open().go_to_login("internal").login(B2B_MAIL, B2B_PASS)
         got_error = kc.sb_auth_form.error_message()
         assert ER.ERROR_TEXT == got_error, f"Expected '{ER.ERROR_TEXT}' but got '{got_error}'"
 
     @allure.title("Авторизация корректного b2b пользователя ОЗ")
+    @allure.id('KeyCloack/ServiceBooking/№ 4')
     def test_sb_login_correct_b2b_user(self, kc):
         kc.sb_auth_form.open().go_to_login("b2b").login(B2B_MAIL, B2B_PASS)
         got_sb_main_h1 = kc.sb_main.sb_h1_text()
@@ -45,6 +49,7 @@ class TestLoginServiceBooking:
         assert kc.sb_auth_form.check_b2b_internal_buttons() is True, "Кнопки b2b/internal авторизации не найдены"
 
     @allure.title("Авторизация корректного internal пользователя ОЗ")
+    @allure.id('KeyCloack/ServiceBooking/№ 5')
     def test_sb_login_correct_internal_user(self, kc):
         kc.sb_auth_form.open().go_to_login("internal").login(INTERNAL_MAIL, INTERNAL_PASS)
         got_sb_main_h1 = kc.sb_main.sb_h1_text()
@@ -54,6 +59,7 @@ class TestLoginServiceBooking:
         assert kc.sb_auth_form.check_b2b_internal_buttons() is True, "Кнопки b2b/internal авторизации не найдены"
 
     @allure.title("Восстановление почты пользователя + Кейс несовпадения вводимых новых паролей ОЗ")
+    @allure.id('KeyCloack/ServiceBooking/№ 6')
     def test_recovery_mail_sb(self, kc):
         kc.sb_auth_form.open().go_to_login("internal").click_forgot_pass()
         kc.sb_auth_form.input_recovery_mail(INTERNAL_MAIL)

@@ -10,8 +10,8 @@ class B2bEmployeePageCab(BasePage):
     H1_EMPLOYEE = (By.XPATH, '(//span[@class="text-h1-bold"])[1]')
     LINK_TO_DASHBOARD = (By.XPATH, '//a[contains(text(),"ссылке")]')
     COPY_LINK_CLIPBOARD = (By.XPATH, '//div[@class="sa-alert__after-wrapper"]//div//*[name()="svg"]')
-    BUBBLE_MASSAGE = (By.XPATH, '//*[@class="sa-snackbar__title"]')
-    CALL_MODAL_MENU = (By.XPATH, '//span[@class="sa-button__content"]')
+    BUBBLE_MESSAGE = (By.XPATH, '//*[@class="sa-snackbar__title"]')
+    CALL_MODAL_MENU = (By.XPATH, '//button[@data-qa="add-new-employee-btn"]')
     NAME_INPUT = (By.XPATH, '//*[@data-qa="employee-first-name-input"]//input')
     LAST_NAME_INPUT = (By.XPATH, '//*[@data-qa="employee-last-name-input"]//input')
     EMAIL_INPUT = (By.XPATH, '//*[@data-qa="employee-email-input"]//input')
@@ -33,7 +33,7 @@ class B2bEmployeePageCab(BasePage):
     DECLINE_ACCESS = (By.XPATH, '//span[contains(text(),"Запретить доступ ко всем опциям")]')
     ADD_EMPLOYEE = (By.XPATH, '//*[@data-qa="add-btn"]')
     CLOSE_MODAL = (By.XPATH, '//*[@data-qa="close-btn"]')
-    ERROR_EMPTY_INPUT = (By.XPATH, '//*[contains(text(),"Заполните поле")]')#5 валидаций
+    ERROR_EMPTY_INPUT = (By.XPATH, '//*[contains(text(),"Заполните поле")]')  # 5 валидаций
     ERROR_MAIL_INPUT = (By.XPATH, '//div[@data-qa="employee-email-input"]//div//div')
     ERROR_PHONE_INPUT = (By.XPATH, '//*[@data-qa="employee-phone-input"]//div//div')
     ERROR_CHECKBOX_INPUT = (By.XPATH, '//span[contains(text(),"Необходимо выбрать хотя бы одну опцию")]')
@@ -193,7 +193,6 @@ class B2bEmployeePageCab(BasePage):
         self.click(self.DELETE_USER)
         return self
 
-
     @allure.step("Подтверждение удаления")
     def accept_delete_employee(self):
         self.click(self.ACCEPT_DELETE)
@@ -202,5 +201,6 @@ class B2bEmployeePageCab(BasePage):
 
     @allure.step("Получаем текст из бабл-уведолмения")
     def get_bubble_text(self):
-        phrase = wait(self.driver, timeout=5).until(EC.visibility_of_element_located(self.BUBBLE_MASSAGE)).text
+        phrase = wait(self.driver, timeout=5).until(EC.visibility_of_element_located(self.BUBBLE_MESSAGE)).text
         return phrase
+

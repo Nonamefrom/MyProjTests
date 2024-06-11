@@ -100,6 +100,7 @@ class MailPitMain(BasePage):
 
     @allure.step("Получение текста заголовка письма")
     def mail_theme_text(self, driver):
+        """Сюда надо передать фикстура.драйвер для работы"""
         time.sleep(2)
         iframe = driver.find_element(By.XPATH, '//iframe[@id="preview-html"]')  # Экземпляр iframe
         driver.switch_to.frame(iframe)
