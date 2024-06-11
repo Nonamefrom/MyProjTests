@@ -1,5 +1,5 @@
 import pytest
-from selenium import webdriver
+from selenium import webdriver as driver
 from utils.env import Env
 # импорт главной фикстуры
 from tests.conftest import app

@@ -43,7 +43,7 @@ class TestLoginControlPanel:
 
     @allure.title("Восстановление почты пользователя + Кейс несовпадения вводимых новых паролей ПУ")
     @allure.id('KeyCloack/CP/№ 4')
-    def test_recovery_mail(self,  kc):
+    def test_recovery_mail(self, kc):
         kc.cp_auth_form.open().click_forgot_pass()
         kc.cp_auth_form.input_recovery_mail(INTERNAL_MAIL)
         kc.driver.execute_script("window.open('', '_blank');")

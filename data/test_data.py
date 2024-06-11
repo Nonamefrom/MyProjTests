@@ -27,6 +27,7 @@ class GenerateData:
     NAME = f"ИмяТест{test_time}"
     LAST_NAME = f"ФамилияТест{test_time}"
     TIME_MAIL = f'test{test_time}@mail.ru'
+    TIME_SVR_MAIL = f'test{test_time}@svrlab.ru'
     RANDOM_MAIL = f'test{nine_digit_number}@mail.ru'
 
 

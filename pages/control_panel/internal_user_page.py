@@ -105,3 +105,11 @@ class InternalUserPage(BasePage):
     def get_bubble_text(self):
         phrase = wait(self.driver, timeout=5).until(EC.visibility_of_element_located(self.BUBBLE_MASSAGE)).text
         return phrase
+
+    @allure.step("Добавление сотрудника")
+    def add_internal(self, name, last_name, email):
+        self.input_name(name)
+        self.input_last_name(last_name)
+        self.input_email(email)
+        self.save_internal()
+
