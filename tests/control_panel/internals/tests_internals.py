@@ -2,6 +2,7 @@ import time
 import allure
 
 import data.test_data
+from data.test_data import RegData
 from data.test_data import ExpectedResults as ER
 
 
