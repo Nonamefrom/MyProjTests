@@ -23,8 +23,25 @@ class RegData:
 
 
 class GenerateData:
-    PHONE = f'9{nine_digit_number}'
-    NAME = f"ИмяТест{test_time}"
+    """
+    Функция name под декоратором property, позволяют получать имя+время(время в момент обращения к ней).
+    Функция name позволяет получать новый телефон в момент обращения, а не обьекту созданном при инициализации пакета.
+    в модуле создается экземпляр класса gen_data = GenerateData()(пример), вызов - gen_data.name .
+    """
+    @property
+    def phone(self):
+        self.nine_digit_number = random.randint(100000000, 999999999)
+        return f'9{self.nine_digit_number}'
+
+    @property
+    def name(self):
+        now = datetime.datetime.now()
+        time_dirty = str(now).split(' ')
+        time_dirty = '-'.join(time_dirty)
+        formated_time = time_dirty[:-7:].replace(':', '.')
+        result = f"ИмяТест{formated_time}"
+        return result
+
     LAST_NAME = f"ФамилияТест{test_time}"
     TIME_MAIL = f'test{test_time}@mail.ru'
     TIME_SVR_MAIL = f'test{test_time}@svrlab.ru'
@@ -44,4 +61,3 @@ class ExpectedResults:
     ERROR_TEXT = 'Неправильное имя пользователя или пароль.'
     PASS_ARE_DIFF = 'Пароли не совпадают.'
     MAIL_VALIDATION_PROFILE_CAB = 'Поле электронный адрес должно быть действительным электронным адресом.'
-

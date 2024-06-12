@@ -6,15 +6,16 @@ import pytest
 from data.test_data import ExpectedResults as ER, RegData, GenerateData
 
 
+gen_data = GenerateData()
+
 @allure.suite("Тесты страницы B2B сотрудников")
 class TestB2BEmployees:
-
     @allure.title("Тест добавления/удаления юзера + отправка соответствующих писем")
     @allure.id('Partner/Employee/№ 1')
     def test_add_and_delete_user(self, emp):
         mail_theme_added_user = 'Вам открыт доступ к Точке Движения'
         mail_theme_deleted_user = 'Ваша учетная запись удалена'
-        name, last_name, mail = GenerateData.NAME, GenerateData.LAST_NAME, GenerateData.RANDOM_MAIL
+        name, last_name, mail = gen_data.name, gen_data.LAST_NAME, gen_data.RANDOM_MAIL
         emp.cabinet_landing_page.open().login_all_env(emp)
         emp.cabinet_side_bar.click_b2b_employee()
         emp.b2b_employee_page.call_modal_menu().input_name(name).input_last_name(last_name).input_email(mail)
@@ -42,8 +43,8 @@ class TestB2BEmployees:
     @allure.id('Partner/Employee/№ 2')
     def test_unique_phone(self, emp):
         expected_error = 'Сотрудник с таким Телефоном уже существует'
-        name, last_name, mail, mail_1, phone = (GenerateData.NAME, GenerateData.LAST_NAME, GenerateData.TIME_MAIL,
-                                                GenerateData.RANDOM_MAIL, GenerateData.PHONE)
+        name, last_name, mail, mail_1, phone = (gen_data.name, gen_data.LAST_NAME, gen_data.TIME_MAIL,
+                                                gen_data.RANDOM_MAIL, gen_data.phone)
         emp.cabinet_landing_page.open().login_all_env(emp)
         emp.cabinet_side_bar.click_b2b_employee()
         emp.b2b_employee_page.call_modal_menu().input_name(name).input_last_name(last_name).input_email(mail)
@@ -63,7 +64,7 @@ class TestB2BEmployees:
     @allure.id('Partner/Employee/№ 3')
     def test_unique_mail(self, emp):
         expected_error = 'Пользователь с таким email уже существует'
-        name, last_name, mail = GenerateData.NAME, GenerateData.LAST_NAME, GenerateData.TIME_MAIL
+        name, last_name, mail = gen_data.name, gen_data.LAST_NAME, gen_data.TIME_MAIL
         emp.cabinet_landing_page.open().login_all_env(emp)
         emp.cabinet_side_bar.click_b2b_employee()
         emp.b2b_employee_page.call_modal_menu().input_name(name).input_last_name(last_name).input_email(mail)
