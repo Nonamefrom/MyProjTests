@@ -1,1 +1,1 @@
-testdata = [('Лукина Алёна', 'admin@svrauto.ru', 'adminPass')]
+testdata = [('Лукина Алёна', 'admin@svrauto.ru', 'adminPass1!')]
