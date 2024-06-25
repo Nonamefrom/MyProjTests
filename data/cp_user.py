@@ -1,11 +1,1 @@
-testdata = [('Ширяев Фёдор', 'internal0@svrauto.ru', 'internal0Pass')
-            # , ('Блохина Валерия', 'internal1@svrauto.ru', 'internal1Pass')
-            # , ('Игнатов Герман', 'internal2@svrauto.ru', 'internal2Pass')
-            # , ('Наумов Василий', 'internal3@svrauto.ru', 'internal3Pass')
-            # , ('Ильин Степан', 'internal4@svrauto.ru', 'internal4Pass')
-            # , ('Тетерина Тамара', 'internal5@svrauto.ru', 'internal5Pass')
-            # , ('Кудряшов Александр', 'internal6@svrauto.ru', 'internal6Pass')
-            # , ('Алексеев Ярослав', 'internal7@svrauto.ru', 'internal7Pass')
-            # , ('Соколова Юлия', 'internal8@svrauto.ru', 'internal8Pass')
-            # , ('Матвеева Зоя', 'internal9@svrauto.ru', 'internal9Pass')
-            ]
+testdata = [('Ширяев Фёдор', 'internal0@svrauto.ru', 'internal0Pass!')]

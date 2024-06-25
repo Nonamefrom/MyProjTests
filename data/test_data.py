@@ -13,11 +13,11 @@ class RegData:
     EMAIL = 'admin@svrauto.ru'
     WRONG_MAIL = 'admin@admin@ru23'
     WRONG_USER_PASS = '123456789'
-    USER_PASS = 'adminPass'
+    USER_PASS = 'adminPass1!'
     INTERNAL_MAIL = 'internal0@svrauto.ru'
-    INTERNAL_PASS = 'internal0Pass'
+    INTERNAL_PASS = 'internal0Pass!'
     B2B_MAIL = 'atuser@mail.ru'
-    B2B_PASS = 'ATuser'
+    B2B_PASS = 'ATuser1!'
     MIM_LOGIN = 'CLIENTMIM'
     MIM_PASS = 'QJN5VXYA'
 
@@ -25,9 +25,10 @@ class RegData:
 class GenerateData:
     """
     Функция name под декоратором property, позволяют получать имя+время(время в момент обращения к ней).
-    Функция name позволяет получать новый телефон в момент обращения, а не обьекту созданном при инициализации пакета.
-    в модуле создается экземпляр класса gen_data = GenerateData()(пример), вызов - gen_data.name .
+    Функция name позволяет получать новый телефон в момент обращения, а не объекту созданном при инициализации пакета.
+    В модуле создается экземпляр класса gen_data = GenerateData()(пример), вызов - gen_data.name.
     """
+
     @property
     def phone(self):
         self.nine_digit_number = random.randint(100000000, 999999999)
