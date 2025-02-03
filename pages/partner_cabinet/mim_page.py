@@ -16,7 +16,7 @@ class MimAuthPage(BasePage):
     LOGIN_BUTTON = (By.XPATH, '//button[contains(text(),"Войти")]')
     H1_LOGIN_PAGE = (By.XPATH, '//h1[contains(text(),"Войдите в МИМ")]')
     H1_MIM_PAGE = (By.XPATH, '//span[contains(text(),"МИМ")]')
-    GO_TO_PARTNER_CABINET = (By.XPATH, '//a[contains(text(),"Кабинет услуг")]')
+    GO_TO_PARTNER_CABINET = (By.XPATH, '//a[contains(text(),"Прокачай продажи")]')
 
     @allure.step("Ввод текста в поля и нажатие кнопки Войти")
     def login_with_mim(self, pages):
