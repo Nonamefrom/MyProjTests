@@ -8,6 +8,10 @@ from data.test_data import ExpectedResults as ER, RegData, GenerateData
 
 gen_data = GenerateData()
 
+def set_b2b_page(emp):
+    emp.cabinet_landing_page.open().login_independently_of_environment(emp)
+    emp.cabinet_side_bar.click_b2b_employee()
+
 @allure.suite("Тесты страницы B2B сотрудников")
 class TestB2BEmployees:
     @allure.title("Тест добавления/удаления юзера + отправка соответствующих писем")
@@ -16,8 +20,7 @@ class TestB2BEmployees:
         mail_theme_added_user = 'Вам открыт доступ к Точке Движения'
         mail_theme_deleted_user = 'Ваша учетная запись удалена'
         name, last_name, mail = gen_data.name, gen_data.LAST_NAME, gen_data.RANDOM_MAIL
-        emp.cabinet_landing_page.open().login_all_env(emp)
-        emp.cabinet_side_bar.click_b2b_employee()
+        set_b2b_page(emp)
         emp.b2b_employee_page.call_modal_menu().input_name(name).input_last_name(last_name).input_email(mail)
         emp.b2b_employee_page.set_sales_manager_role().set_full_access().click_add_employee()
         emp.driver.execute_script("window.open('', '_blank');")
@@ -45,8 +48,7 @@ class TestB2BEmployees:
         expected_error = 'Сотрудник с таким Телефоном уже существует'
         name, last_name, mail, mail_1, phone = (gen_data.name, gen_data.LAST_NAME, gen_data.TIME_MAIL,
                                                 gen_data.RANDOM_MAIL, gen_data.phone)
-        emp.cabinet_landing_page.open().login_all_env(emp)
-        emp.cabinet_side_bar.click_b2b_employee()
+        set_b2b_page(emp)
         emp.b2b_employee_page.call_modal_menu().input_name(name).input_last_name(last_name).input_email(mail)
         emp.b2b_employee_page.input_phone(phone).set_sales_manager_role().set_full_access().click_add_employee()
         got_error = emp.b2b_employee_page.get_bubble_text()
@@ -65,8 +67,7 @@ class TestB2BEmployees:
     def test_unique_mail(self, emp):
         expected_error = 'Пользователь с таким email уже существует'
         name, last_name, mail = gen_data.name, gen_data.LAST_NAME, gen_data.TIME_MAIL
-        emp.cabinet_landing_page.open().login_all_env(emp)
-        emp.cabinet_side_bar.click_b2b_employee()
+        set_b2b_page(emp)
         emp.b2b_employee_page.call_modal_menu().input_name(name).input_last_name(last_name).input_email(mail)
         emp.b2b_employee_page.set_sales_manager_role().set_full_access().click_add_employee()
         got_error = emp.b2b_employee_page.get_bubble_text()
@@ -85,8 +86,7 @@ class TestB2BEmployees:
     @allure.id('Partner/Employee/№ 4')
     def test_check_empty_inputs(self, emp):
         exception = 5  # 5 - количество полей на валидацию пустого поля
-        emp.cabinet_landing_page.open().login_all_env(emp)
-        emp.cabinet_side_bar.click_b2b_employee()
+        set_b2b_page(emp)
         emp.b2b_employee_page.call_modal_menu()
         emp.b2b_employee_page.click_add_employee()
         error_count = emp.b2b_employee_page.count_error_empty_massage_clients()
@@ -96,8 +96,7 @@ class TestB2BEmployees:
     @allure.id('Partner/Employee/№ 5')
     def test_check_empty_checkbox(self, emp):
         exception_error = "Необходимо выбрать хотя бы одну опцию"
-        emp.cabinet_landing_page.open().login_all_env(emp)
-        emp.cabinet_side_bar.click_b2b_employee()
+        set_b2b_page(emp)
         emp.b2b_employee_page.call_modal_menu()
         emp.b2b_employee_page.set_chose_access()
         emp.b2b_employee_page.click_add_employee()
@@ -107,8 +106,7 @@ class TestB2BEmployees:
     @allure.title("Тест проверки валидации поля email")
     @allure.id('Partner/Employee/№ 6')
     def test_check_wrong_mail_validation(self, emp):
-        emp.cabinet_landing_page.open().login_all_env(emp)
-        emp.cabinet_side_bar.click_b2b_employee()
+        set_b2b_page(emp)
         emp.b2b_employee_page.call_modal_menu()
         emp.b2b_employee_page.set_chose_access()
         emp.b2b_employee_page.click_add_employee()
@@ -123,8 +121,7 @@ class TestB2BEmployees:
     @allure.id('Partner/Employee/№ 1000001')
     @pytest.hookimpl(trylast=True)
     def test_delete_all_test_users(self, emp):
-        emp.cabinet_landing_page.open().login_all_env(emp)
-        emp.cabinet_side_bar.click_b2b_employee()
+        set_b2b_page(emp)
         while True:
             emp.tables_steps.find_test_employee("ИмяТест")
             try:
